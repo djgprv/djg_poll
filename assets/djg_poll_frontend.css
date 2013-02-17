@@ -1,0 +1,16 @@
+/* djg_poll */
+.djg_poll{  border: 1px solid #ccc; background-color: #eee; width: 180px; padding: 10px;}
+.djg_poll h3 {font-size: 20px; padding: 0; margin: 0;}
+.djg_poll ul li span { padding: 0 0 0 5px;}
+.djg_poll_alert{ text-align: center;}
+/* djg_poll_vote_area */
+.djg_poll_vote_area {}
+.djg_poll_vote_button {width: 100%; background-color: #ddd; border:none; padding:5px; color: #666; font-weight: bold; cursor: pointer;}
+.djg_poll_vote_button:hover {background-color: #76a83a; color: #fff;}
+/* djg_poll_result_area */
+.djg_poll_result_area {}
+.djg_poll_result_area .tb {clear: both;}
+.djg_poll_result_area .option{margin: 0 0 -12px 0; color: #666; }
+.djg_poll_result_area .option p em{color: brown;}
+.djg_poll_result_area .bar{ display: block; height:5px; background-color:#76a83a; margin: 0;}
+.djg_poll_result_area .yourBar{background-color: brown;}
