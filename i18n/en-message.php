@@ -1,13 +1,12 @@
 <?php
 
     /**
-     * Polish file for plugin djg_poll
+     * English file for plugin djg_poll
      * @package Plugins
      * @subpackage djg_poll
      */
 
     return array(
-      /** ver 0.0.2 */
       /** sdebar */
 	  'A sidebar' => 'Panel boczny',
 	  'Add new poll' => 'Dodaj nową ankietę',
