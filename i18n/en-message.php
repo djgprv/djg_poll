@@ -8,7 +8,7 @@
 
     return array(
       /** sdebar */
-	  'A sidebar' => 'A sidebar',
+	  'A sidebar' => 'Panel boczny',
 	  'Add new poll' => 'Dodaj nową ankietę',
 	  'List of all polls' => 'Lista ankiet',
 	  'Statistics' => 'Statystyki',
