@@ -44,7 +44,7 @@
 <?php echo __('Question:');?>
 <select id="poll_id" name="djg_poll[poll_id]">
 <?php foreach($polls as $poll) : ?>
-<option  name="djg_poll[poll_id]" value="<?php echo $poll['pollq_id']; ?>" ><?php echo '('.$poll['pollq_id'].') ' . Djgpoll::truncate($poll['pollq_question'],4); ?></option>
+<option  name="djg_poll[poll_id]" value="<?php echo $poll['pollq_id']; ?>" ><?php echo '('.$poll['pollq_id'].') ' . Djgpoll::trim_text($poll['pollq_question'],40); ?></option>
 <?php endforeach; ?>
 </select><button type="submit"><?php echo __('Generate chart'); ?></button>
 </form>
