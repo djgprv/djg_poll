@@ -37,7 +37,7 @@
 Plugin::setInfos(array(
 	'id'		=> 'djg_poll',
 	'title'		=> __('[djg] Poll'),
-	'description'	=> __('Poll'),
+	'description'	=> __('AJAX poll system to your WolfCMS site.'),
 	'version'	=> '0.0.3',
 	'license'	=> 'GPL',
 	'author'	=> 'Michał Uchnast',

@@ -7,6 +7,8 @@
      */
 
     return array(
+	'[djg] Poll' => '[djg] Poll',
+	'AJAX poll system to your WolfCMS site.' => 'AJAX poll system to your WolfCMS site.',
       /** sdebar */
 	  'A sidebar' => 'Panel boczny',
 	  'Add new poll' => 'Dodaj nową ankietę',
