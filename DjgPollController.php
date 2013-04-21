@@ -170,7 +170,7 @@ class DjgPollController extends PluginController
 			GROUP BY DAY(i.pollip_timestamp) 
 			ORDER BY i.pollip_timestamp ASC');
 			while ($arr = $s1q->fetch()) $data[$arr['date']] = $arr['votes'];
-			if (empty($data)) $data[__('no result')] = 0;
+			if (empty($data)) $data[__('no results')] = 0;
 			$graph = new phpMyGraph();
 			$graph->parseVerticalLineGraph($data, $cfg);
 			break;

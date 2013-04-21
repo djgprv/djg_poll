@@ -91,6 +91,8 @@
       'End date:' => 'Data końcowa:',
 	  'Question:' => 'Pytanie:',
 	  'Generate chart' => 'Generuj wykres',
+	  'Votes per day' => 'Ilość głosów dziennie',
+	  'no results' => 'brak wyników',
 	  /** enable */
 	  'djg_poll - plugin settings initialized.' => 'djg_poll - ustawienia wtyczki zostały zapisane.',
 	  'djg_poll - unable to store plugin settings!' => 'djg_poll - nie można było zapisać ustawień wtyczki.',

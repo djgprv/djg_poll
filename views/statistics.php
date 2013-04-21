@@ -13,7 +13,7 @@
   <tr class="odd">
 		<td><?php echo __('Total polls'); ?></td>
 		<td><?php echo $qsa[0]['t'] ?></td>
-		<td><?php echo __('Total Answares'); ?></td>
+		<td><?php echo __('Total answares'); ?></td>
 		<td><?php echo $asa[0]['tAnswares'] ?></td>
   </tr>
   <tr>
@@ -50,7 +50,7 @@
 </form>
 </div>
 <?php if ($error == 0): ?>
-<p><strong><?php echo __('Votes Per Day'); ?></strong></p>
+<p><strong><?php echo __('Votes per day'); ?></strong></p>
 <img src="<?php echo URL_PUBLIC; ?>djg_poll_chart.php/<?php echo $_POST['djg_poll']['start_date']; ?>/<?php echo $_POST['djg_poll']['end_date']; ?>/<?php echo $_POST['djg_poll']['poll_id']; ?>/votesPerDay"/>
 <?php endif; ?>
 <?php
