@@ -48,13 +48,13 @@
 		<tr class="u_area">
 			<td class="label">
 				<?php echo __('Answers'); ?>
-				<a href="#" class="add_answer"><img src="<?php echo URL_PUBLIC; ?>wolf/plugins/djg_cf/images/16_add.png" alt="<?php echo __('add subject'); ?>" title="<?php echo __('add subject'); ?>" /></a>
+				<a href="#" class="add_answer"><img src="<?php echo URL_PUBLIC; ?>wolf/plugins/djg_cf/images/16_add.png" alt="<?php echo __('Add answer'); ?>" title="<?php echo __('Add answer'); ?>" /></a>
 			</td>
 			<td class="field">
 				<ul class="a">
 					<?php $djg_poll_a = ($djg_poll['a']) ? count($djg_poll['a']) : 2; ?>
 					<?php for ($i=0; $i < $djg_poll_a; $i++): ?>
-					<li><input name="djg_poll[a][]" type="text" value="<?php echo $djg_poll['a'][$i]; ?>" class="djg_poll_answare" /><a href="#" class="remove_answer"> <img src="<?php echo URL_PUBLIC; ?>wolf/plugins/djg_poll/images/16_del.png" alt="<?php echo __('remove_answer'); ?>" title="<?php echo __('remove_answer'); ?>" /></a></li>
+					<li><input name="djg_poll[a][]" type="text" value="<?php echo $djg_poll['a'][$i]; ?>" class="djg_poll_answare" /><a href="#" class="remove_answer"> <img src="<?php echo URL_PUBLIC; ?>wolf/plugins/djg_poll/images/16_del.png" alt="<?php echo __('Remove answer'); ?>" title="<?php echo __('Remove answer'); ?>" /></a></li>
 					<?php endfor; ?>
 				</ul>
 			</td>
@@ -136,7 +136,7 @@
 		$(".a").append('<li>'
 			+ '<input name="djg_poll[a][]" type="input" class="djg_poll_answare" />'
 			+ '<a href="#" class="remove_answer">'
-			+ ' <img src="<?php echo rtrim(URL_PUBLIC,'/').(USE_MOD_REWRITE ? '/': '/?/'); ?>wolf/plugins/djg_poll/images/16_del.png" alt="<?php echo __('remove_answer'); ?>" title="<?php echo __('remove_answer'); ?>" />'
+			+ ' <img src="<?php echo rtrim(URL_PUBLIC,'/').(USE_MOD_REWRITE ? '/': '/?/'); ?>wolf/plugins/djg_poll/images/16_del.png" alt="<?php echo __('Remove answer'); ?>" title="<?php echo __('Remove answer'); ?>" />'
 			+ '</a></li>');
 		return false;
 	});
