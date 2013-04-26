@@ -42,7 +42,7 @@ class DjgPollController extends PluginController
 				redirect(get_url('plugin/djg_poll/polls'));
 			else:
 				// isset empty fields
-				Flash::set('error', __('Uzupełnij :i pole(a).',array(':i'=>$i))); Flash::init();
+				Flash::set('error', __('Complete the field (:i).',array(':i'=>$i))); Flash::init();
 				$this->display('djg_poll/views/add', array('djg_poll' => $_POST['djg_poll']));
 			endif;		
 		else:
@@ -146,7 +146,7 @@ class DjgPollController extends PluginController
 	function onOff($id, $page_id=0) {
     $result = Djgpoll::onOffPoll($id);
 		if ($result===false) 
-      Flash::set('error',__('Fail'));
+      Flash::set('error',__('Status has not been changed.'));
     elseif($result==0)
       Flash::set('success',__('Poll (:id) is :status now!',array(':id'=>$id,':status'=>'active')));
     elseif($result==1)
@@ -228,15 +228,15 @@ class DjgPollController extends PluginController
           if( (checked.length == aCount) && (0 == <?php echo Plugin::getSetting('allowSelectAll','djg_poll'); ?>) ){
             showAlert(alert,'<?php echo __('You can not select all answares.'); ?>');
           }
-          else if(checked.length > 0){
+          else if(checked.length > 0){  
             area.find('.djg_poll_vote_button').fadeOut(100);
             var jqxhr = $.post("<?php echo rtrim(URL_PUBLIC,'/').(USE_MOD_REWRITE ? '/': '/?/'); ?>djg_poll_vote.php", new_checked, function(data){}, "json");
             jqxhr.success(function(data){
-              area.fadeOut(200, function () {
-                $(this).html(data.results); 
-                $(this).fadeIn(400);
-                animateResults(area+'.djg_poll_result_area');
-              }); 
+              area.fadeOut(100, function () {
+				area.html(data.results);
+				area.fadeIn(100);
+				animateResults('.djg_poll_result_area');
+               });
             });
             jqxhr.complete(function(data){});
             jqxhr.error(function(data){

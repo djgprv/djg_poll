@@ -1,5 +1,4 @@
 /** author information */
-
 .kreacjawww {background-color: #fff;  padding: 4px;}
 .kreacjawww span {background: url('images/16_poland.png') no-repeat left center; padding-left: 20px;}
 /**
@@ -17,8 +16,10 @@ table
 #djg_poll_list tbody tr:hover td{background-color: #bec5cc;}
 #djg_poll_list tbody tr:hover td .daterelative {display: none;}
 #djg_poll_list tbody tr:hover td .dateabsolute {display: block;}
+/*
 #djg_poll_list tbody tr .actions_wrapper {visibility: hidden;}
 #djg_poll_list tbody tr:hover td .actions_wrapper {visibility: visible;}
+*/
 
 #djg_poll_list tbody tr .date_1 {visibility: visible; display:inline;}
 #djg_poll_list tbody tr:hover td .date_1 {visibility: hidden; display:none;}
@@ -26,7 +27,7 @@ table
 #djg_poll_list tbody tr:hover td .date_2 {visibility: visible; display:inline;}
 
 #djg_poll_list td {padding: 5px 10px;}
-#djg_poll_list td.actions{ text-align: right; width: 120px; }
+#djg_poll_list td.actions{  }
 #djg_poll_list td.size { text-align: right; width: 60px; }
 #djg_poll_list td.name,
 #djg_poll_list td.updated_by { width: 120px; }

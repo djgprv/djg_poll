@@ -11,7 +11,7 @@
                         <option value="0" <?php if ($settings['defaultMultiple'] == "0") echo 'selected = "";' ?>><?php echo __('No'); ?></option>
                     </select>
 				</td>
-				<td class="help"><?php echo __(''); ?></td>
+				<td class="help"></td>
 			</tr>
 			<tr>
 				<td class="label"><label for="settings[defaultActive]"><?php echo __('Default active') ?></label></td>
@@ -21,7 +21,7 @@
                         <option value="0" <?php if ($settings['defaultActive'] == "0") echo 'selected = "";' ?>><?php echo __('No'); ?></option>
                     </select>
 				</td>
-				<td class="help"><?php echo __(''); ?></td>
+				<td class="help"></td>
 			</tr>
 			<tr>
 				<td class="label"><label for="settings[resultsPerPage]"><?php echo __('Results per page') ?></label></td>
@@ -34,17 +34,17 @@
                         <option value="50" <?php if ($settings['resultsPerPage'] == "50") echo 'selected = "";' ?>>50</option>
                     </select>
 				</td>
-				<td class="help"><?php echo __(''); ?></td>
+				<td class="help"></td>
 			</tr>
 			<tr>
-				<td class="label"><label for="settings[showTab]"><?php echo __('Show tab') ?></label></td>
+				<td class="label"><label for="settings[showTab]"><?php echo __('Show tab in admin menu') ?></label></td>
 				<td class="field">
                     <select class="select" name="settings[showTab]">
                         <option value="1" <?php if ($settings['showTab'] == "1") echo 'selected = "";' ?>><?php echo __('Yes'); ?></option>
                         <option value="0" <?php if ($settings['showTab'] == "0") echo 'selected = "";' ?>><?php echo __('No'); ?></option>
                     </select>
 				</td>
-				<td class="help"><?php echo __(''); ?></td>
+				<td class="help"></td>
 			</tr>
 		</table>
 	</fieldset>
@@ -59,7 +59,7 @@
                         <option value="0" <?php if ($settings['specifyYourVote'] == "0") echo 'selected = "";' ?>><?php echo __('No'); ?></option>
                     </select>
 				</td>
-				<td class="help"><?php echo __(''); ?></td>
+				<td class="help"></td>
 			</tr>	
 			<tr>
 				<td class="label"><label for="settings[sortResults]"><?php echo __('Sort Results') ?></label></td>
@@ -69,7 +69,7 @@
                         <option value="0" <?php if ($settings['sortResults'] == "0") echo 'selected = "";' ?>><?php echo __('No'); ?></option>
                     </select>
 				</td>
-				<td class="help"><?php echo __(''); ?></td>
+				<td class="help"></td>
 			</tr>
 			<tr>
 				<td class="label"><label for="settings[allowSelectAll]"><?php echo __('Allow To Select All Answres') ?></label></td>
@@ -79,7 +79,7 @@
                         <option value="0" <?php if ($settings['allowSelectAll'] == "0") echo 'selected = "";' ?>><?php echo __('No'); ?></option>
                     </select>
 				</td>
-				<td class="help"><?php echo __(''); ?></td>
+				<td class="help"></td>
 			</tr>	      
 		</table>
 	</fieldset>
@@ -94,7 +94,7 @@
                         <option value="0" <?php if ($settings['checkCookie'] == "0") echo 'selected = "";' ?>><?php echo __('No'); ?></option>
                     </select>
 				</td>
-				<td class="help"><?php echo __(''); ?></td>
+				<td class="help"></td>
 			</tr>
 			<tr>
 				<td class="label"><label for="settings[checkIP]"><?php echo __('Check IP') ?></label></td>
@@ -104,7 +104,7 @@
                         <option value="0" <?php if ($settings['checkIP'] == "0") echo 'selected = "";' ?>><?php echo __('No'); ?></option>
                     </select>
 				</td>
-				<td class="help"><?php echo __(''); ?></td>
+				<td class="help"></td>
 			</tr>	
 		</table>
 	</fieldset>
@@ -120,7 +120,7 @@
                         <option value="360x160" <?php if ($settings['chartsSize'] == "360x160") echo 'selected = "";' ?>><?php echo __('360x160'); ?></option>
                     </select>
 				</td>
-				<td class="help"><?php echo __(''); ?></td>
+				<td class="help"></td>
 			</tr>
 		</table>
 	</fieldset>

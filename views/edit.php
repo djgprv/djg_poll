@@ -18,7 +18,7 @@
 					<option value="1" <?php if($djg_poll['pollq_multiple'] == "1") echo 'selected="selected"' ?>><?php echo __('yes'); ?></option>
 				</select>	
 			</td>
-			<td class="help"><?php echo __('Allows users to select more than one answere?'); ?></td>
+			<td class="help"><?php echo __('Allows users to select more than one answer.'); ?></td>
 		</tr>
 		<tr>
 			<td class="label"><?php echo __('Is active'); ?>: </label></td>
@@ -28,7 +28,7 @@
 					<option value="1" <?php if($djg_poll['pollq_active'] == "1") echo 'selected="selected"' ?>><?php echo __('yes'); ?></option>
 				</select>	
 			</td>
-			<td class="help"><?php echo __('Passible to vote.'); ?></td>
+			<td class="help"><?php echo __('Possible to vote.'); ?></td>
 		</tr>
 		<tr>
 			<td class="label"><?php echo __('Time between votes'); ?>: </label></td>

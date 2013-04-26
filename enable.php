@@ -43,11 +43,11 @@ $stmt = $PDO->prepare($create_table['pollsip']); $stmt->execute();
 /* example data */
 
 $PDO->exec("INSERT INTO ".TABLE_PREFIX."djg_pollsq (pollq_id, pollq_question, pollq_timestamp, pollq_totalvotes, pollq_active, pollq_expiry, pollq_multiple, pollq_totalvoters, pollq_date, pollq_startvote, pollq_endvote) VALUES 
-(1, 'What is your favourite CMS system?', '1', 0, 1, '', 0, 0, '2012-07-31 13:57:05', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(1, 'What is your favourite CMS system?', '1', 0, 0, '', 0, 0, '2012-07-31 13:57:05', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (2, 'How many unique visitors do you receive daily?', '1', 0, 0, '', 0, 0, '2012-08-03 10:11:45', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 'Which editor do you use to create your website?', '0', 0, 1, '', 1, 0, '2012-08-03 10:12:49', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(4, 'What is most important when it comes to web polls?', '0', 0, 1, '', 1, 0, '2012-08-03 10:13:56', '0000-00-00 00:00:00', '0000-00-00 00:00:00')");
-$PDO->exec("INSERT INTO ".TABLE_PREFIX."djg_pollsa (polla_aid, polla_qid, polla_answers, polla_votes) VALUES (1, 3, 'Homesite', 0),(2, 3, 'FrontPage', 17),(3, 3, 'Dreamweaver', 0),(4, 1, 'Joomla', 0),(5, 1, 'Other', 0),(6, 3, 'Text Editor', 0),(7, 3, 'GoLive', 0),(8, 1, 'Wordpress', 0),(9, 1, 'Drupal', 0),(10, 1, 'WolfCMS', 0),(11, 2, '+900', 0),(12, 2, '300 to 600', 0),(13, 2, '600 to 900', 0),(14, 2, '100 to 300', 0),(15, 2, '0 to 100', 0),(16, 3, 'Other', 0),(17, 4, 'Not possible to cheat', 0),(18, 4, 'Easy to setup', 0),(19, 4, 'Appearance', 0),(20, 4, 'The possibility to comment the poll', 0)");	
+(3, 'Which editor do you use to create your website?', '0', 0, 0, '', 1, 0, '2012-08-03 10:12:49', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(4, 'What is most important when it comes to web polls?', '0', 0, 0, '', 1, 0, '2012-08-03 10:13:56', '0000-00-00 00:00:00', '0000-00-00 00:00:00')");
+$PDO->exec("INSERT INTO ".TABLE_PREFIX."djg_pollsa (polla_aid, polla_qid, polla_answers, polla_votes) VALUES (1, 3, 'Homesite', 0),(2, 3, 'FrontPage', 0),(3, 3, 'Dreamweaver', 0),(4, 1, 'Joomla', 0),(5, 1, 'Other', 0),(6, 3, 'Text Editor', 0),(7, 3, 'GoLive', 0),(8, 1, 'Wordpress', 0),(9, 1, 'Drupal', 0),(10, 1, 'WolfCMS', 0),(11, 2, '+900', 0),(12, 2, '300 to 600', 0),(13, 2, '600 to 900', 0),(14, 2, '100 to 300', 0),(15, 2, '0 to 100', 0),(16, 3, 'Other', 0),(17, 4, 'Not possible to cheat', 0),(18, 4, 'Easy to setup', 0),(19, 4, 'Appearance', 0),(20, 4, 'The possibility to comment the poll', 0)");	
 
 $settings = array(
 	'ver' => '0.0.3',

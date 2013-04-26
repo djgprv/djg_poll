@@ -26,7 +26,7 @@
 /**
  * The djg_poll plugin
 
- * @author Micha≥ Uchnast <djgprv@gmail.com>,
+ * @author Micha≈Ç Uchnast <djgprv@gmail.com>,
  * @copyright kreacjawww.pl
  * @license http://www.gnu.org/licenses/gpl.html GPLv3 license
  */

@@ -54,13 +54,15 @@
         echo '<td class="date"><span class="date_1">' . $poll['pollq_date'] . '</span><span class="date_2">' . $poll['pollq_date'] . '</span></td>';
 		echo '<td class="actions">';
 		echo '<div class="actions_wrapper">';
-		echo '<a href="' . get_url('plugin/djg_poll/edit') . '/' . (int)$poll['pollq_id'] . '/'.$pn.'"><img src="' . PLUGINS_URI.'djg_poll/images/16_edit.png' . '" title="'.__('edit').'" alt="'.__('edit').'"></a> ';
-		echo ( ( (int)$poll['pollq_dead'] ) === 1)?'<img src="' . PLUGINS_URI.'djg_poll/images/16_smile.png' . '" title="'.__('in time').'" alt="'.__('in time').'"> ':'<img src="' . PLUGINS_URI.'djg_poll/images/16_dead.png' . '" title="'.__('beyond the time').'" alt="'.__('beyond the time').'"> ';
-		echo'<a href="' . get_url('plugin/djg_poll/onOff') . '/' . (int)$poll['pollq_id'] . '/'.$pn.'"><img src="' . PLUGINS_URI.'djg_poll/images/' . $currentStatus . '" title="'.__('activate / deactivate').'" alt="'.__('activate / deactivate').'"></a> '.
-      '<a href="' . get_url('plugin/djg_poll/delete') . '/' . (int)$poll['pollq_id'] . '/'.$pn.'"';
-      echo "onclick=\"return confirm('".__('Do you really want to remove this poll?')."')\">";
-      echo '<img src="' . PLUGINS_URI.'djg_poll/images/16_del.png' . '" title="'.__('remove').'" alt="'.__('remove').'"></a>'.
-			'</div>' .
+			echo '<a href="' . get_url('plugin/djg_poll/edit') . '/' . (int)$poll['pollq_id'] . '/'.$pn.'"><img width="16px" height="16px" src="' . PLUGINS_URI.'djg_poll/images/16_edit.png' . '" title="'.__('edit').'" alt="'.__('edit').'" /></a>';
+		
+			echo ( ( (int)$poll['pollq_dead'] ) === 1)?'<img src="' . PLUGINS_URI.'djg_poll/images/16_smile.png' . '" title="'.__('in time').'" alt="'.__('in time').'"> ':'<img src="' . PLUGINS_URI.'djg_poll/images/16_dead.png' . '" title="'.__('beyond the time').'" alt="'.__('beyond the time').'" />';
+		
+			echo '<a href="' . get_url('plugin/djg_poll/onOff') . '/' . (int)$poll['pollq_id'] . '/'.$pn.'"><img src="' . PLUGINS_URI.'djg_poll/images/' . $currentStatus . '" title="'.__('activate / deactivate').'" alt="'.__('activate / deactivate').'" /></a>';
+			echo '<a href="' . get_url('plugin/djg_poll/delete') . '/' . (int)$poll['pollq_id'] . '/'.$pn.'"';
+			echo "onclick=\"return confirm('".__('Do you really want to remove this poll?')."')\">";
+			echo '<img src="' . PLUGINS_URI.'djg_poll/images/16_del.png' . '" title="'.__('remove').'" alt="'.__('remove').'" /></a>';
+		echo '</div>' .
 		    '</td>'; 
 		echo '</tr>';
 	endforeach;
