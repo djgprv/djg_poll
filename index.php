@@ -56,6 +56,7 @@ Plugin::addJavascript('djg_poll', 'js/jquery.dateFormat-1.0.js');
 
 include_once('models'.DS.'Djgpoll.php');
 include_once('lib'.DS.'phpMyGraph5.0.php');
+include_once('lib'.DS.'DateDifference.php');
 
 Dispatcher::addRoute(array(
   '/djg_poll_assets.js' => '/plugin/djg_poll/djg_poll_frontend_assets',

@@ -137,4 +137,17 @@ return array(
 /** uninstall */
     'Unable to uninstall djg_poll plugin.' => 'Unable to uninstall djg_poll plugin.',
     'Plugin succesfully uninstalled!' => 'Plugin succesfully uninstalled!',
+/** date diff */
+	'Just now' => 'Pzed chwilą',
+	'1 minute ago' => 'minutę temu',
+	':minutes minutes ago' => ':minutet minut temu',
+	'1 hour ago' => 'godzinę temu',
+	':hours hours ago' => ':hours gozdzin temu',
+	'Yesterday' => 'Wczoraj',
+	':days days ago' => ':days dni temu',
+	'1 week ago' => 'tudzień temu',
+	':weeks weeks ago' => ':weeks tygodni temu',
+	':months months ago' => ':month miesięcy temu',
+	'1 year ago' => 'roku temu',
+	':years years ago' => ':years lat temu',
 );

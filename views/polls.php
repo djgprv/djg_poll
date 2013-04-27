@@ -41,7 +41,7 @@
 		$pn = ($page_number!=0)?$page_number:'0';
 		$currentStatus = ( (int)$poll['pollq_active'] === 1 )?'16_on.png':'16_off.png';
 		$color='';
-		/* font color 
+		/** font color 
 		if ( ((int)$poll['pollq_dead'] === 1) && ( (int)$poll['pollq_active'] === 0 ) ):
 			$color = 'color:red; font-wedth:bold;';
 		elseif ( ((int)$poll['pollq_dead'] === 1) || ( (int)$poll['pollq_active'] === 0 ) ):
@@ -50,20 +50,17 @@
 		*/
 		echo '<tr class="' .  even_odd() . '" style="' . $color  . '">';
 		echo '<td class="page_id">' . (int)$poll['pollq_id'] . '</td>';
-		echo '<td class="question">' . Djgpoll::trim_text($poll['pollq_question']) .'</td>';
-        echo '<td class="date"><span class="date_1">' . $poll['pollq_date'] . '</span><span class="date_2">' . $poll['pollq_date'] . '</span></td>';
-		echo '<td class="actions">';
-		echo '<div class="actions_wrapper">';
-			echo '<a href="' . get_url('plugin/djg_poll/edit') . '/' . (int)$poll['pollq_id'] . '/'.$pn.'"><img width="16px" height="16px" src="' . PLUGINS_URI.'djg_poll/images/16_edit.png' . '" title="'.__('edit').'" alt="'.__('edit').'" /></a>';
+		echo '<td class="question">' . Djgpoll::trim_text($poll['pollq_question']).'</td>';
 		
-			echo ( ( (int)$poll['pollq_dead'] ) === 1)?'<img src="' . PLUGINS_URI.'djg_poll/images/16_smile.png' . '" title="'.__('in time').'" alt="'.__('in time').'"> ':'<img src="' . PLUGINS_URI.'djg_poll/images/16_dead.png' . '" title="'.__('beyond the time').'" alt="'.__('beyond the time').'" />';
-		
-			echo '<a href="' . get_url('plugin/djg_poll/onOff') . '/' . (int)$poll['pollq_id'] . '/'.$pn.'"><img src="' . PLUGINS_URI.'djg_poll/images/' . $currentStatus . '" title="'.__('activate / deactivate').'" alt="'.__('activate / deactivate').'" /></a>';
+        echo '<td class="date"><span class="date_1">'. DateDifference::getString(new DateTime($poll['pollq_date'])) .'</span><span class="date_2">' . $poll['pollq_date'] . '</span></td>';
+		echo '<td class="actions_wrapper">';
+			echo '<a href="' . get_url('plugin/djg_poll/edit') . '/' . (int)$poll['pollq_id'] . '/'.$pn.'"><img width="16px" height="16px" src="' . PLUGINS_URI.'djg_poll/images/16_edit.png' . '" title="'.__('edit').'" alt="'.__('edit').'" /></a> ';
+			echo ( ( (int)$poll['pollq_dead'] ) === 1)?'<img src="' . PLUGINS_URI.'djg_poll/images/16_smile.png' . '" title="'.__('in time').'" alt="'.__('in time').'"> ':'<img src="' . PLUGINS_URI.'djg_poll/images/16_dead.png' . '" title="'.__('beyond the time').'" alt="'.__('beyond the time').'" /> ';
+			echo '<a href="' . get_url('plugin/djg_poll/onOff') . '/' . (int)$poll['pollq_id'] . '/'.$pn.'"><img src="' . PLUGINS_URI.'djg_poll/images/' . $currentStatus . '" title="'.__('activate / deactivate').'" alt="'.__('activate / deactivate').'" /></a> ';
 			echo '<a href="' . get_url('plugin/djg_poll/delete') . '/' . (int)$poll['pollq_id'] . '/'.$pn.'"';
 			echo "onclick=\"return confirm('".__('Do you really want to remove this poll?')."')\">";
-			echo '<img src="' . PLUGINS_URI.'djg_poll/images/16_del.png' . '" title="'.__('remove').'" alt="'.__('remove').'" /></a>';
-		echo '</div>' .
-		    '</td>'; 
+			echo '<img src="' . PLUGINS_URI.'djg_poll/images/16_del.png' . '" title="'.__('remove').'" alt="'.__('remove').'" /></a> ';
+		echo '</td>'; 
 		echo '</tr>';
 	endforeach;
 	else:

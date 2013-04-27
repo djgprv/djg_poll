@@ -137,4 +137,17 @@ return array(
 /** uninstall */
     'Unable to uninstall djg_poll plugin.' => 'Unable to uninstall djg_poll plugin.',
     'Plugin succesfully uninstalled!' => 'Plugin succesfully uninstalled!',
+/** date diff */
+	'Just now' => 'Just now',
+	'1 minute ago' => '1 minute ago',
+	':minutes minutes ago' => ':minutes minutes ago',
+	'1 hour ago' => '1 hour ago',
+	':hours hours ago' => ':hours hours ago',
+	'Yesterday' => 'Yesterday',
+	':days days ago' => ':days days ago',
+	'1 week ago' => '1 week ago',
+	':weeks weeks ago' => ':weeks weeks ago',
+	':months months ago' => ':months months ago',
+	'1 year ago' => '1 year ago',
+	':years years ago' => ':years years ago',
 );
