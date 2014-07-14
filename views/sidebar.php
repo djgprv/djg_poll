@@ -4,4 +4,4 @@
 <p class="button"><a href="<?php echo get_url('plugin/djg_poll/statistics'); ?>"><img src="<?php echo URL_PUBLIC; ?>wolf/plugins/djg_poll/images/32_statistics.png" align="middle" alt="statistics icon" /> <?php echo __('Statistics'); ?></a></p>
 <p class="button"><a href="<?php echo get_url('plugin/djg_poll/settings'); ?>"><img src="<?php echo URL_PUBLIC; ?>wolf/plugins/djg_poll/images/32_settings.png" align="middle" alt="settings icon" /> <?php echo __('Settings'); ?></a></p>
 <p class="button"><a href="<?php echo get_url('plugin/djg_poll/documentation'); ?>"><img src="<?php echo URL_PUBLIC; ?>wolf/plugins/djg_poll/images/32_documentation.png" align="middle" alt="documentation icon" /> <?php echo __('Documentation'); ?></a></p>
-<p class="kreacjawww"><span><a href="http://kreacjawww.pl/">Michał Uchnast</a></span> - djg poll plugin</p>
+<p class="kreacjawww"><span><a href="http://kreacjawww.pl/">&copy; Michał Uchnast - http://kreacjawww.pl/</a></span></p>

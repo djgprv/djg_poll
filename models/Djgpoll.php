@@ -124,7 +124,7 @@ class Djgpoll {
     * return true or false
     */
     public static function addVote($questionId=null,$answareId=null){
-      if ( (!is_array($answareId)) or (count($answareId)==0) or ($questionId==null) or ($answareId==null)): 
+      if ( (!is_array($answareId)) or (count($answareId)==0) or ($questionId==null) or ($answareId==null) or (self::checkIP($questionId)) or (self::checkCookie($questionId)) ): 
         return false; 
       else:
         $ip = $_SERVER['REMOTE_ADDR'];
@@ -202,7 +202,7 @@ class Djgpoll {
 	*/
 	public static function checkIP ($questionId=null){
     $__CMS_CONN__ = Record::getConnection();
-		$pollsip = $__CMS_CONN__->query('SELECT  pollip_id, pollip_qid, pollip_ip, pollip_timestamp FROM '.TABLE_PREFIX.'djg_pollsip WHERE pollip_qid = '.$questionId.' AND pollip_ip = "'.$_SERVER['REMOTE_ADDR'].'" GROUP BY pollip_timestamp ORDER BY pollip_timestamp DESC LIMIT 1');
+		$pollsip = $__CMS_CONN__->query('SELECT pollip_id, pollip_qid, pollip_ip, pollip_timestamp FROM '.TABLE_PREFIX.'djg_pollsip WHERE pollip_qid = '.$questionId.' AND pollip_ip = "'.$_SERVER['REMOTE_ADDR'].'" GROUP BY pollip_timestamp ORDER BY pollip_timestamp DESC LIMIT 1');
     $ipq = $pollsip->fetchAll();
     if ( ( count($ipq)>0 ) && ( (self::roznica_data($ipq[0]['pollip_timestamp'],date('Y-m-d H:i:s'),"hours")) < (self::checkTimestamp($questionId)) ) ):
        return true;
@@ -295,7 +295,6 @@ class Djgpoll {
     * return true or false
 	*/
     public static function isLive($questionId){
-	
       $__CMS_CONN__ = Record::getConnection();
       $pollq = $__CMS_CONN__->query('SELECT pollq_id, pollq_startvote, pollq_endvote FROM '.TABLE_PREFIX.'djg_pollsq WHERE (pollq_id = '.$questionId.') AND ( pollq_startvote = "0000-00-00 00:00:00" OR pollq_endvote = "0000-00-00 00:00:00" OR (NOW()BETWEEN pollq_startvote AND pollq_endvote) ) LIMIT 1');
       $rows = $pollq->fetchAll(PDO::FETCH_ASSOC);
@@ -346,15 +345,16 @@ class Djgpoll {
       elseif (!self::isActive($questionId)):
         $return['alert'] = __('Poll is not active.');
       elseif( (self::checkIP($questionId) != false) && (Plugin::getSetting('checkIP','djg_poll')) ):
-        $return['alert'] = __('IP');
+        //$return['alert'] = __('IP');
+		$return['alert'] = __('Already voted');
       elseif( (self::checkCookie($questionId) != false) && (Plugin::getSetting('checkCookie','djg_poll')) ):
-        $return['alert'] = __('Cookie');
+        //$return['alert'] = __('Cookie');
+		$return['alert'] = __('Already voted');
       else:
         $return['error'] = 0;
       endif;
       return $return;
     }
-   
     /**
     * DONE
     * return time between dates

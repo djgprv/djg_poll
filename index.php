@@ -30,6 +30,7 @@
 */
 /**
 	* history version
+	* 0.31 - fix voting security bug (thx moroz), cleanup the code, small changes in en-message.php
 	* 0.0.3 - new trim text fynction, fixed division by zero in renderPollResults  
 	* 0.0.2 - clean up, bug fixes, lifetime option, polish translation
 	* 0.0.1 - to test
@@ -38,7 +39,7 @@ Plugin::setInfos(array(
 	'id'		=> 'djg_poll',
 	'title'		=> __('[djg] Poll'),
 	'description'	=> __('AJAX poll system to your WolfCMS site.'),
-	'version'	=> '0.0.4',
+	'version'	=> '0.31',
 	'license'	=> 'GPL',
 	'author'	=> 'Michał Uchnast',
 	'website'	=> 'http://www.kreacjawww.pl/',
@@ -63,37 +64,32 @@ Dispatcher::addRoute(array(
   '/djg_poll_vote.php' => '/plugin/djg_poll/djg_poll_ajax_vote',
   '/djg_poll_chart.php/:any/:any/:num/:any' => '/plugin/djg_poll/djg_poll_chart/$1/$2/$3/$4'
 ));
-function djg_poll_display_by_id($questionId)
-{
+function djg_poll_display_by_id($questionId){
 	echo '<div class="djg_poll">';
     echo Djgpoll::renderPollForm($questionId);
 	echo '</div>';
 }
-function djg_poll_vote_poll_by_id($questionId)
-{
+function djg_poll_vote_poll_by_id($questionId){
 	$__CMS_CONN__ = Record::getConnection();
 	$pollsq = $__CMS_CONN__->query('SELECT pollq_id FROM '.TABLE_PREFIX.'djg_pollsq WHERE pollq_id = '.$questionId);
 	$q = $pollsq->fetchAll();
 	echo (count($q) > 0)?djg_poll_display_by_id($questionId):'<p>'.__('No polls by id: questionId',array('questionId'=>$questionId)).'</p>';
 }
-function djg_poll_vote_random_poll()
-{
+function djg_poll_vote_random_poll(){
 	/* no archive - active and live */
 	$__CMS_CONN__ = Record::getConnection();
 	$pollsq = $__CMS_CONN__->query('SELECT pollq_id FROM '.TABLE_PREFIX.'djg_pollsq WHERE (pollq_active = 1) AND ( pollq_startvote = "0000-00-00 00:00:00" OR pollq_endvote = "0000-00-00 00:00:00" OR (NOW() BETWEEN pollq_startvote AND pollq_endvote) )');
 	$q = $pollsq->fetchAll();
 	echo (count($q) > 0)?djg_poll_display_by_id($q[rand(0,count($q)-1)]['pollq_id']):'<p>'.__('No polls to display').'</p>';
 }
-function djg_poll_vote_newest_poll()
-{
+function djg_poll_vote_newest_poll(){
 	/* no archive - active and live */
 	$__CMS_CONN__ = Record::getConnection();
 	$pollsq = $__CMS_CONN__->query('SELECT pollq_id FROM '.TABLE_PREFIX.'djg_pollsq WHERE (pollq_active = 1) AND ( pollq_startvote = "0000-00-00 00:00:00" OR pollq_endvote = "0000-00-00 00:00:00" OR (NOW() BETWEEN pollq_startvote AND pollq_endvote) ) ORDER BY pollq_id DESC LIMIT 1');
 	$q = $pollsq->fetchAll();
 	echo (count($q) > 0)?djg_poll_display_by_id($q[0]['pollq_id']):'<p>'.__('No polls to vote').'</p>';
 }
-function djg_poll_show_archive()
-{
+function djg_poll_show_archive(){
 	$__CMS_CONN__ = Record::getConnection();
 	$pollsq = $__CMS_CONN__->query('SELECT pollq_id FROM '.TABLE_PREFIX.'djg_pollsq WHERE (pollq_active = 0 OR (pollq_startvote != "0000-00-00 00:00:00" AND pollq_endvote != "0000-00-00 00:00:00" AND (NOW() NOT BETWEEN pollq_startvote AND pollq_endvote)) )  ORDER BY pollq_id DESC');
 	$q = $pollsq->fetchAll();

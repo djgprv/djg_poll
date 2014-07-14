@@ -54,7 +54,7 @@
 				<ul class="a">
 					<?php $djg_poll_a = ($djg_poll['a']) ? count($djg_poll['a']) : 2; ?>
 					<?php for ($i=0; $i < $djg_poll_a; $i++): ?>
-					<li><input name="djg_poll[a][]" type="text" value="<?php echo $djg_poll['a'][$i]; ?>" class="djg_poll_answare" /><a href="#" class="remove_answer"> <img src="<?php echo URL_PUBLIC; ?>wolf/plugins/djg_poll/images/16_del.png" alt="<?php echo __('Remove answer'); ?>" title="<?php echo __('Remove answer'); ?>" /></a></li>
+					<li><input name="djg_poll[a][]" type="text" value="<?php echo $djg_poll['a'][$i]; ?>" class="djg_poll_answare" /><a href="#" class="remove_answer"><img src="<?php echo URL_PUBLIC; ?>wolf/plugins/djg_poll/images/16_del.png" alt="<?php echo __('Remove answer'); ?>" title="<?php echo __('Remove answer'); ?>" /></a></li>
 					<?php endfor; ?>
 				</ul>
 			</td>
@@ -103,14 +103,14 @@
 			<td class="label"><?php echo __('Start'); ?>: </label></td>
 			<td class="field">
 				<input id="startvote" name="djg_poll[startvote]" type="text" value="<?php if($djg_poll['startvote']) echo $djg_poll['startvote']; ?>" />
-				<span class="now_date"><?php echo __('now'); ?></span> <span class="clear_date"><?php echo __('clear'); ?></span>
+				<span class="now_date"><?php echo __('now'); ?></span><span class="clear_date"><?php echo __('clear'); ?></span>
 			</td>
 			<td class="help"><?php echo __('If You don\'t want to use lifetime just leave empty fields.'); ?></td>
 		</tr>
 		<tr>
 			<td class="label"><?php echo __('End'); ?>: </label></td>
 			<td class="field">
-				<input id="endvote" name="djg_poll[endvote]" type="text" value="<?php if($djg_poll['endvote']) echo $djg_poll['endvote']; ?>" /> <span class="now_date"><?php echo __('now'); ?></span> <span class="clear_date"><?php echo __('clear'); ?></span>
+				<input id="endvote" name="djg_poll[endvote]" type="text" value="<?php if($djg_poll['endvote']) echo $djg_poll['endvote']; ?>" /><span class="now_date"><?php echo __('now'); ?></span><span class="clear_date"><?php echo __('clear'); ?></span>
 			</td>
 			<td class="help"><?php echo __('You can use keybord cursor to change value.'); ?></td>
 		</tr>
@@ -124,7 +124,7 @@
 <script type="text/javascript">
 // <![CDATA[
 	$(document).ready(function() {
-		$.datetimeEntry.setDefaults({spinnerImage: '<?php echo URL_PUBLIC; ?>wolf/plugins/djg_poll/js/spinnerDefault.png'});
+		$.datetimeEntry.setDefaults({spinnerImage: '<?php echo rtrim(URL_PUBLIC,'/').(USE_MOD_REWRITE ? '/': '/?/'); ?>wolf/plugins/djg_poll/js/spinnerDefault.png'});
 		if($("#startvote").val()=='0000-00-00 00:00:00'){ $("#startvote").val(''); };
 		if($("#endvote").val()=='0000-00-00 00:00:00'){	$("#endvote").val(''); };
 		$("#startvote").datetimeEntry({datetimeFormat: 'Y-O-D H:M:S'});
@@ -136,7 +136,7 @@
 		$(".a").append('<li>'
 			+ '<input name="djg_poll[a][]" type="input" class="djg_poll_answare" />'
 			+ '<a href="#" class="remove_answer">'
-			+ ' <img src="<?php echo rtrim(URL_PUBLIC,'/').(USE_MOD_REWRITE ? '/': '/?/'); ?>wolf/plugins/djg_poll/images/16_del.png" alt="<?php echo __('Remove answer'); ?>" title="<?php echo __('Remove answer'); ?>" />'
+			+ '<img src="<?php echo rtrim(URL_PUBLIC,'/').(USE_MOD_REWRITE ? '/': '/?/'); ?>wolf/plugins/djg_poll/images/16_del.png" alt="<?php echo __('Remove answer'); ?>" title="<?php echo __('Remove answer'); ?>" />'
 			+ '</a></li>');
 		return false;
 	});

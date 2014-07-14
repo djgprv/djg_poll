@@ -117,8 +117,9 @@ class DjgPollController extends PluginController
     
     $this->display('djg_poll/views/statistics', array('polls' => $polls, 'qsa'=>$qsa, 'asa'=>$asa, 'error'=>$error));
   }
-    function documentation() {
-        $this->display('djg_poll/views/documentation');
+	public function documentation() {
+		$content = Parsedown::instance()->parse(file_get_contents(PLUGINS_ROOT.DS.'djg_poll'.DS.'README.md'));
+        $this->display('djg_poll/views/documentation', array('content'=>$content));
     }
     function settings() {
         $this->display('djg_poll/views/settings', array('settings' => Plugin::getAllSettings('djg_poll')));

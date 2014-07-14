@@ -55,7 +55,7 @@
 				<input id="startvote" name="djg_poll[startvote]" type="text" value="<?php if($djg_poll['pollq_startvote']) echo $djg_poll['pollq_startvote']; ?>" />
 				<span class="now_date"><?php echo __('now'); ?></span> <span class="clear_date"><?php echo __('clear'); ?></span>
 			</td>
-			<td class="help"><?php echo __("If You don't want to use lifetime just leave empty fields."); ?></td>
+			<td class="help"><?php echo __('If You don\'t want to use lifetime just leave empty fields.'); ?></td>
 		</tr>
 		<tr>
 			<td class="label"><?php echo __('End'); ?>: </label></td>
