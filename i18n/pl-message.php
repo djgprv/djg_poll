@@ -154,4 +154,5 @@ return array(
 'Question:' => 'Question:', 
 'Generate chart' => 'Generate chart', 
 'Votes per day' => 'Votes per day',
+'Select poll' => 'Wybierz ankietę', 
 );

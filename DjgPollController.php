@@ -82,8 +82,8 @@ class DjgPollController extends PluginController
 	}
   function statistics() {
     $__CMS_CONN__ = Record::getConnection();
-    $pollsq = $__CMS_CONN__->query('SELECT pollq_id, pollq_question FROM '.TABLE_PREFIX.'djg_pollsq ORDER BY pollq_id DESC');
-    $polls = $pollsq->fetchAll();
+    $pollsQ = $__CMS_CONN__->query('SELECT pollq_id, pollq_question FROM '.TABLE_PREFIX.'djg_pollsq ORDER BY pollq_id DESC');
+    $polls = $pollsQ->fetchAll();
     //questions
     $qsaQ = $__CMS_CONN__->query('SELECT count(pollq_question) as t, SUM(pollq_totalvotes) as tVotes, SUM(pollq_totalvoters) as tVoters, SUM(pollq_active) as tActive, SUM(pollq_multiple) as tMultiple  FROM '.TABLE_PREFIX.'djg_pollsq WHERE 1');
     $qsa = $qsaQ->fetchAll();

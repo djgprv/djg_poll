@@ -124,7 +124,7 @@ class Djgpoll {
     * return true or false
     */
     public static function addVote($questionId=null,$answareId=null){
-      if ( (!is_array($answareId)) or (count($answareId)==0) or ($questionId==null) or ($answareId==null) or (self::checkIP($questionId)) or (self::checkCookie($questionId)) ): 
+      if ( (!is_array($answareId)) or (count($answareId)==0) or ($questionId==null) or ($answareId==null) ): 
         return false; 
       else:
         $ip = $_SERVER['REMOTE_ADDR'];

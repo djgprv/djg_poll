@@ -2,7 +2,7 @@
 <wolf-plugins>
     <wolf-plugin>
         <id>djg_poll</id>
-        <version>0.31</version>
+        <version>0.32</version>
         <status>beta</status>
     </wolf-plugin>
 </wolf-plugins>
