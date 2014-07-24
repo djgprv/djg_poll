@@ -27,6 +27,7 @@ return array(
 'Poll (:id) is :status now!' => 'Poll (:id) is :status now!', 
 'no results' => 'no results', 
 'You can not select all answares.' => 'You can not select all answares.', 
+'Ajax error!' => 'Ajax error!', 
 'Select answare first!' => 'Select answare first!', 
 'no jQuery librery' => 'no jQuery librery', 
 /** enable.php */ 

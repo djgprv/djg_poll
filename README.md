@@ -4,7 +4,7 @@ djg_poll
 
 HISTORY VERSION
 ----
-* 0.31 - fix voting security bug (thx moroz), cleanup the code, small changes in en-message.php
+* 0.31-0.33 - fix voting security bug (thx moroz), cleanup the code, small changes in en-message.php.
 * 0.0.3 - new trim text fynction, fixed division by zero in renderPollResults
 * 0.0.2 - clean up, bug fixes, lifetime option, polish translation
 * 0.0.1 - beta

@@ -39,7 +39,7 @@ Plugin::setInfos(array(
 	'id'		=> 'djg_poll',
 	'title'		=> __('[djg] Poll'),
 	'description'	=> __('AJAX poll system to your WolfCMS site.'),
-	'version'	=> '0.32',
+	'version'	=> '0.33',
 	'license'	=> 'GPL',
 	'author'	=> 'Michał Uchnast',
 	'website'	=> 'http://www.kreacjawww.pl/',

@@ -184,12 +184,20 @@ class DjgPollController extends PluginController
 	function djg_poll_ajax_vote(){
 		if( (!isset($_POST['answare_id'])) || (!isset($_POST['question_id'])) ):
 			$json['error'] = 1;
+			$json['alert'] = 'no answare_id or question_id';
+
 		else:
-			$json['error'] = !Djgpoll::addVote($_POST['question_id'],$_POST['answare_id']);
-			$json['results'] = Djgpoll::renderPollResults((int)$_POST['question_id'],$_POST['answare_id']);
+			$addVote = Djgpoll::addVote($_POST['question_id'],$_POST['answare_id']);
+			if($addVote['error'] == 1):
+				$json['error'] = 1;
+				$json['alert'] = $addVote['alert'];
+			else:
+				$json['error'] = 0;
+				$json['results'] = Djgpoll::renderPollResults((int)$_POST['question_id'],$_POST['answare_id']);
+			endif;
 		endif;
 		echo json_encode($json);
-		exit();	
+		exit();
 	}
 	/** 
 	* Dispatcher
@@ -205,7 +213,7 @@ class DjgPollController extends PluginController
 	};
 	function showAlert(div,text){
 		div.html(text);
-		div.delay(400).fadeOut(400, function () {
+		div.delay(2000).fadeOut(400, function () {
 			$(this).html('');
 			$(this).fadeIn(1);
 		});
@@ -215,38 +223,41 @@ class DjgPollController extends PluginController
 		{
 			animateResults('.djg_poll_result_area');
 			$('<link rel="stylesheet" type="text/css" href="<?php echo URL_PUBLIC; ?>wolf/plugins/djg_poll/assets/djg_poll_frontend.css" />').appendTo('head');
-			$("input[type='button']").click(function() 
-			{
+			$("input[type='button']").click(function(){
 				if(($(this).parent().attr('class') == 'djg_poll_vote_area') && ($(this).attr('name') == 'vote') ){
 					var area = $(this).parent();
-          var alert = area.find('.djg_poll_alert');
+					var alert = area.find('.djg_poll_alert');
 					var question_id = area.attr("id").match(/[\d]+$/);
 					var checked = new Array();
-          var aCount = 0;
+					var aCount = 0;
 					$("input[name='djg_poll_q_"+question_id+"']:checked").each(function(i){checked.push(this.value);});
-          $("input[name='djg_poll_q_"+question_id+"']").each(function(i){aCount++;});
+					$("input[name='djg_poll_q_"+question_id+"']").each(function(i){aCount++;});
 					var new_checked = { 'answare_id[]': checked, 'question_id': question_id[0] };
-          if( (checked.length == aCount) && (0 == <?php echo Plugin::getSetting('allowSelectAll','djg_poll'); ?>) ){
-            showAlert(alert,'<?php echo __('You can not select all answares.'); ?>');
-          }
-          else if(checked.length > 0){  
-            area.find('.djg_poll_vote_button').fadeOut(100);
-            var jqxhr = $.post("<?php echo rtrim(URL_PUBLIC,'/').(USE_MOD_REWRITE ? '/': '/?/'); ?>djg_poll_vote.php", new_checked, function(data){}, "json");
-            jqxhr.success(function(data){
-              area.fadeOut(100, function () {
-				area.html(data.results);
-				area.fadeIn(100);
-				animateResults('.djg_poll_result_area');
-               });
-            });
-            jqxhr.complete(function(data){});
-            jqxhr.error(function(data){
-              showAlert(alert,'ajax error');
-              area.find('.djg_poll_vote_button').fadeIn(100);
-            });
-          }else{
-            showAlert(alert,'<?php echo __('Select answare first!'); ?>')
-          };
+					if( (checked.length == aCount) && (0 == <?php echo Plugin::getSetting('allowSelectAll','djg_poll'); ?>) ){
+						showAlert(alert,'<?php echo __('You can not select all answares.'); ?>');
+					}else if(checked.length > 0){  
+						area.find('.djg_poll_vote_button').fadeOut(100);
+						var jqxhr = $.post("<?php echo rtrim(URL_PUBLIC,'/').(USE_MOD_REWRITE ? '/': '/?/'); ?>djg_poll_vote.php", new_checked, function(data){}, "json");
+						jqxhr.success(function(data){
+							if(data.error == 1){
+								area.find('.djg_poll_vote_button').fadeIn(100);
+								showAlert(alert, data.alert);
+							}else{
+								area.fadeOut(100, function () {
+									area.html(data.results);
+									area.fadeIn(100);
+									animateResults('.djg_poll_result_area');
+								});
+							};
+						});
+						jqxhr.complete(function(data){});
+						jqxhr.error(function(data){
+							showAlert(alert,'<?php echo __('Ajax error!'); ?>');
+							area.find('.djg_poll_vote_button').fadeIn(100);
+						});
+					}else{
+						showAlert(alert,'<?php echo __('Select answare first!'); ?>')
+					};
 				};
 			});    
 		});

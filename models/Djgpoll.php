@@ -124,47 +124,59 @@ class Djgpoll {
     * return true or false
     */
     public static function addVote($questionId=null,$answareId=null){
-      if ( (!is_array($answareId)) or (count($answareId)==0) or ($questionId==null) or ($answareId==null) ): 
-        return false; 
-      else:
-        $ip = $_SERVER['REMOTE_ADDR'];
-        $host = $_SERVER['SERVER_NAME'];
-        //AuthUser::load();
-		$userName = (AuthUser::isLoggedIn())?AuthUser::getUserName():'noUser';
-		$userId = (AuthUser::isLoggedIn())?AuthUser::getId():'0';
-        //
-        $__CMS_CONN__ = Record::getConnection();
-        $pollip = $__CMS_CONN__->prepare('INSERT INTO '.TABLE_PREFIX.'djg_pollsip (pollip_qid, pollip_aid, pollip_ip, pollip_host, pollip_timestamp, pollip_user, pollip_userid) VALUES(:pollip_qid, :pollip_aid, :pollip_ip, :pollip_host, now(), :pollip_user, :pollip_userid)');
-        $polla = $__CMS_CONN__->prepare('UPDATE '.TABLE_PREFIX.'djg_pollsa SET polla_votes = polla_votes + 1 WHERE polla_aid = :answareId');
-        $pollq = $__CMS_CONN__->prepare('UPDATE '.TABLE_PREFIX.'djg_pollsq SET pollq_totalvoters = pollq_totalvoters + 1, pollq_totalvotes = pollq_totalvotes+:pollq_totalvotes WHERE pollq_id = :questionId');
-        //
-        try {
-          $__CMS_CONN__->beginTransaction();
-          for($i=0; $i < count($answareId); $i++):
-            //ip
-            $pollip->bindValue(':pollip_qid', $questionId);
-            $pollip->bindValue(':pollip_aid', $answareId[$i]);
-            $pollip->bindValue(':pollip_ip', $ip);
-            $pollip->bindValue(':pollip_host', $host);
-            $pollip->bindValue(':pollip_user', $userName);
-            $pollip->bindValue(':pollip_userid', $userId);
-            $polla->bindValue(':answareId', $answareId[$i]);
-            $polla->execute();
-			$pollip->execute();
-            usleep(200);
-          endfor;
-          //question
-          $pollq->bindValue(':questionId', $questionId);
-          $pollq->bindValue(':pollq_totalvotes', count($answareId));
-          $pollq->execute();
-          $__CMS_CONN__->commit();
-          self::setcookie($questionId);
-          return true;
-        } 
-        catch(PDOException $e) 
-        {
-          $__CMS_CONN__->rollBack(); return false;
-        }
+		if ( (!is_array($answareId)) or (count($answareId)==0) or ($questionId==null) or ($answareId==null) ):
+			$return['error'] = 1;
+			$return['alert'] = 'no answare_id or question_id';
+			return $return;
+		else:
+			$vote = self::canVote($questionId);
+			if ($vote['error'] == 0):
+				$ip = $_SERVER['REMOTE_ADDR'];
+				$host = $_SERVER['SERVER_NAME'];
+				//AuthUser::load();
+				$userName = (AuthUser::isLoggedIn())?AuthUser::getUserName():'noUser';
+				$userId = (AuthUser::isLoggedIn())?AuthUser::getId():'0';
+				//
+				$__CMS_CONN__ = Record::getConnection();
+				$pollip = $__CMS_CONN__->prepare('INSERT INTO '.TABLE_PREFIX.'djg_pollsip (pollip_qid, pollip_aid, pollip_ip, pollip_host, pollip_timestamp, pollip_user, pollip_userid) VALUES(:pollip_qid, :pollip_aid, :pollip_ip, :pollip_host, now(), :pollip_user, :pollip_userid)');
+				$polla = $__CMS_CONN__->prepare('UPDATE '.TABLE_PREFIX.'djg_pollsa SET polla_votes = polla_votes + 1 WHERE polla_aid = :answareId');
+				$pollq = $__CMS_CONN__->prepare('UPDATE '.TABLE_PREFIX.'djg_pollsq SET pollq_totalvoters = pollq_totalvoters + 1, pollq_totalvotes = pollq_totalvotes+:pollq_totalvotes WHERE pollq_id = :questionId');
+				//
+				try {
+				  $__CMS_CONN__->beginTransaction();
+				  for($i=0; $i < count($answareId); $i++):
+					//ip
+					$pollip->bindValue(':pollip_qid', $questionId);
+					$pollip->bindValue(':pollip_aid', $answareId[$i]);
+					$pollip->bindValue(':pollip_ip', $ip);
+					$pollip->bindValue(':pollip_host', $host);
+					$pollip->bindValue(':pollip_user', $userName);
+					$pollip->bindValue(':pollip_userid', $userId);
+					$polla->bindValue(':answareId', $answareId[$i]);
+					$polla->execute();
+					$pollip->execute();
+					usleep(200);
+				  endfor;
+				  //question
+				  $pollq->bindValue(':questionId', $questionId);
+				  $pollq->bindValue(':pollq_totalvotes', count($answareId));
+				  $pollq->execute();
+				  $__CMS_CONN__->commit();
+				  self::setCookie($questionId);
+				  $return['error'] = 0;
+				  return $return;
+				} 
+				catch(PDOException $e) 
+				{
+					$return['error'] = 1;
+					$return['alert'] = $__CMS_CONN__->rollBack();
+					return $return;
+				}
+			else:
+				$return['error'] = 1;
+				$return['alert'] = $vote['alert'];
+				return $return;
+			endif;
      endif;
     }
 	/** DONE
@@ -177,7 +189,10 @@ class Djgpoll {
 		$__CMS_CONN__ = Record::getConnection();
 		$pollsq = $__CMS_CONN__->query('SELECT pollq_timestamp FROM '.TABLE_PREFIX.'djg_pollsq WHERE pollq_id = '.$questionId.' LIMIT 1');
 		$q = $pollsq->fetchAll();
-		if(setcookie(md5("djg_poll_cookie_".$questionId),1,time()+3600*$q[0]['pollq_timestamp']))
+		ob_start();
+		setCookie(md5("djg_poll_cookie_".$questionId),1,time()+3600*$q[0]['pollq_timestamp']);
+		ob_flush();
+		if(isset($_COOKIE[md5("djg_poll_cookie_".$questionId)]))
 			return true;
 		else
 			return false;
@@ -270,7 +285,7 @@ class Djgpoll {
     public static function renderPollResults($questionId=null,$answareId=null) {
       $__CMS_CONN__ = Record::getConnection();
       $order = (Plugin::getSetting('sortResults','djg_poll') == 1)?'ORDER BY a.polla_votes DESC':'';
-      $pollsq = $__CMS_CONN__->query('SELECT q.pollq_id, a.polla_aid, q.pollq_question, q.pollq_totalvotes, a.polla_answers,	a.polla_votes FROM '.TABLE_PREFIX.'djg_pollsq q LEFT JOIN '.TABLE_PREFIX.'djg_pollsa a ON (q.pollq_id = a.polla_qid) WHERE q.pollq_id = '.$questionId.' '.$order.' ');
+      $pollsq = $__CMS_CONN__->query('SELECT q.pollq_id, a.polla_aid, q.pollq_question, q.pollq_totalvotes, a.polla_answers, a.polla_votes FROM '.TABLE_PREFIX.'djg_pollsq q LEFT JOIN '.TABLE_PREFIX.'djg_pollsa a ON (q.pollq_id = a.polla_qid) WHERE q.pollq_id = '.$questionId.' '.$order.' ');
       $q = $pollsq->fetchAll();    
       $title = $q[0]['pollq_question'];
       $total = $q[0]['pollq_totalvotes'];
@@ -344,11 +359,11 @@ class Djgpoll {
         $return['alert'] = __('Poll is beyond the lifetime.');	  
       elseif (!self::isActive($questionId)):
         $return['alert'] = __('Poll is not active.');
-      elseif( (self::checkIP($questionId) != false) && (Plugin::getSetting('checkIP','djg_poll')) ):
-        //$return['alert'] = __('IP');
+      elseif( (self::checkIP($questionId) == true) && (Plugin::getSetting('checkIP','djg_poll')) ):
+        //$return['alert'] = __('Already voted').'IP';
 		$return['alert'] = __('Already voted');
-      elseif( (self::checkCookie($questionId) != false) && (Plugin::getSetting('checkCookie','djg_poll')) ):
-        //$return['alert'] = __('Cookie');
+      elseif( (self::checkCookie($questionId) == true) && (Plugin::getSetting('checkCookie','djg_poll')) ):
+        //$return['alert'] = __('Already voted').'IP';
 		$return['alert'] = __('Already voted');
       else:
         $return['error'] = 0;
