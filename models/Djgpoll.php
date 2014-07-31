@@ -1,6 +1,5 @@
 <?php
 class Djgpoll {
-
 	function Djgpoll(){
 		// constructor;
 	}
@@ -12,7 +11,7 @@ class Djgpoll {
    public static function addNewPoll($newPoll) {
     $__CMS_CONN__ = Record::getConnection();
     $pollq = $__CMS_CONN__->prepare('INSERT INTO '.TABLE_PREFIX.'djg_pollsq(pollq_question, pollq_active, pollq_multiple, pollq_timestamp, pollq_date, pollq_startvote, pollq_endvote) VALUES(:question, :active, :multiple, :timestamp, now(), :startvote, :endvote)');
-    $polla = $__CMS_CONN__->prepare('INSERT INTO '.TABLE_PREFIX.'djg_pollsa(polla_qid, polla_answers) VALUES(:polla_qid, :polla_answers)');
+    $polla = $__CMS_CONN__->prepare('INSERT INTO '.TABLE_PREFIX.'djg_pollsa(polla_qid, polla_answers) VALUES (:polla_qid, :polla_answers)');
 	try {
 		$__CMS_CONN__->beginTransaction();
 		/* q */
@@ -28,10 +27,10 @@ class Djgpoll {
           for($i=0; $i < count($newPoll['a']); $i++):
               $polla->bindValue('polla_qid', $lastId);
               $polla->bindValue(':polla_answers', $newPoll['a'][$i]);
-              usleep(200);
+              usleep(Plugin::getSetting('usleep','djg_poll'));
               $polla->execute();
           endfor;
-          usleep(200);
+          usleep(Plugin::getSetting('usleep','djg_poll'));
           $__CMS_CONN__->commit();
       } 
       catch(PDOException $e) 
@@ -40,7 +39,7 @@ class Djgpoll {
               // This should be specific to SQLite, sleep for 0.25 seconds
               // and try again.  We do have to commit the open transaction first though
               $__CMS_CONN__->commit();
-              usleep(200);
+              usleep(Plugin::getSetting('usleep','djg_poll'));
               return false;      
           else:
               $__CMS_CONN__->rollBack();
@@ -67,7 +66,7 @@ class Djgpoll {
 		  return true;
 		else
 		  return false; 
-  }
+	}
     /** DONE
     * delPoll
     * parametr poll_id (int)
@@ -82,13 +81,13 @@ class Djgpoll {
 			$__CMS_CONN__->beginTransaction();
 			$pollq->bindValue(':pollq_id', $questionId);
 			$pollq->execute();
-			usleep(200);
+			usleep(Plugin::getSetting('usleep','djg_poll'));
 			$polla->bindValue(':pollq_id', $questionId);
 			$polla->execute();
-			usleep(200);
+			usleep(Plugin::getSetting('usleep','djg_poll'));
 			$pollip->bindValue(':pollq_id', $questionId);
 			$pollip->execute();
-			usleep(200);
+			usleep(Plugin::getSetting('usleep','djg_poll'));
 			$__CMS_CONN__->commit();
       return true;
 		} 
@@ -139,8 +138,8 @@ class Djgpoll {
 				//
 				$__CMS_CONN__ = Record::getConnection();
 				$pollip = $__CMS_CONN__->prepare('INSERT INTO '.TABLE_PREFIX.'djg_pollsip (pollip_qid, pollip_aid, pollip_ip, pollip_host, pollip_timestamp, pollip_user, pollip_userid) VALUES(:pollip_qid, :pollip_aid, :pollip_ip, :pollip_host, now(), :pollip_user, :pollip_userid)');
-				$polla = $__CMS_CONN__->prepare('UPDATE '.TABLE_PREFIX.'djg_pollsa SET polla_votes = polla_votes + 1 WHERE polla_aid = :answareId');
-				$pollq = $__CMS_CONN__->prepare('UPDATE '.TABLE_PREFIX.'djg_pollsq SET pollq_totalvoters = pollq_totalvoters + 1, pollq_totalvotes = pollq_totalvotes+:pollq_totalvotes WHERE pollq_id = :questionId');
+				//$polla = $__CMS_CONN__->prepare('UPDATE '.TABLE_PREFIX.'djg_pollsa SET polla_votes = polla_votes + 1 WHERE polla_aid = :answareId');
+				//$pollq = $__CMS_CONN__->prepare('UPDATE '.TABLE_PREFIX.'djg_pollsq SET pollq_totalvoters = pollq_totalvoters + 1, pollq_totalvotes = pollq_totalvotes+:pollq_totalvotes WHERE pollq_id = :questionId');
 				//
 				try {
 				  $__CMS_CONN__->beginTransaction();
@@ -152,15 +151,15 @@ class Djgpoll {
 					$pollip->bindValue(':pollip_host', $host);
 					$pollip->bindValue(':pollip_user', $userName);
 					$pollip->bindValue(':pollip_userid', $userId);
-					$polla->bindValue(':answareId', $answareId[$i]);
-					$polla->execute();
+					//$polla->bindValue(':answareId', $answareId[$i]);
+					//$polla->execute();
 					$pollip->execute();
-					usleep(200);
+					usleep(Plugin::getSetting('usleep','djg_poll'));
 				  endfor;
 				  //question
-				  $pollq->bindValue(':questionId', $questionId);
-				  $pollq->bindValue(':pollq_totalvotes', count($answareId));
-				  $pollq->execute();
+				  //$pollq->bindValue(':questionId', $questionId);
+				  //$pollq->bindValue(':pollq_totalvotes', count($answareId));
+				 //$pollq->execute();
 				  $__CMS_CONN__->commit();
 				  self::setCookie($questionId);
 				  $return['error'] = 0;
@@ -190,9 +189,9 @@ class Djgpoll {
 		$pollsq = $__CMS_CONN__->query('SELECT pollq_timestamp FROM '.TABLE_PREFIX.'djg_pollsq WHERE pollq_id = '.$questionId.' LIMIT 1');
 		$q = $pollsq->fetchAll();
 		ob_start();
-		setCookie(md5("djg_poll_cookie_".$questionId),1,time()+3600*$q[0]['pollq_timestamp']);
+		setCookie(md5(Plugin::getSetting('cookie_prefix','djg_poll').$questionId),1,time()+3600*$q[0]['pollq_timestamp']);
 		ob_flush();
-		if(isset($_COOKIE[md5("djg_poll_cookie_".$questionId)]))
+		if(isset($_COOKIE[md5(Plugin::getSetting('cookie_prefix','djg_poll').$questionId)]))
 			return true;
 		else
 			return false;
@@ -203,7 +202,7 @@ class Djgpoll {
 	* return true or false
 	*/
 	public static function checkCookie ($questionId=null){
-		if ( isset($_COOKIE[md5("djg_poll_cookie_".$questionId)]) && ($questionId!=null) && ($_COOKIE[md5("djg_poll_cookie_".$questionId)] == 1)	)
+		if ( isset($_COOKIE[md5(Plugin::getSetting('cookie_prefix','djg_poll').$questionId)]) && ($questionId!=null) && ($_COOKIE[md5(Plugin::getSetting('cookie_prefix','djg_poll').$questionId)] == 1)	)
 			return true;
 		else
 			return false;
@@ -258,10 +257,10 @@ class Djgpoll {
       else:
         $resultHtml[] = '<div class="djg_poll_vote_area" id="djg_poll-id-'.$questionId.'">';
         $__CMS_CONN__ = Record::getConnection();
-        $pollsq = $__CMS_CONN__->query('SELECT pollq_id, pollq_multiple, pollq_question, pollq_totalvotes FROM '.TABLE_PREFIX.'djg_pollsq WHERE pollq_id = '.$questionId.' LIMIT 1');
+        $pollsq = $__CMS_CONN__->query('SELECT pollq_id, pollq_multiple, pollq_question FROM '.TABLE_PREFIX.'djg_pollsq WHERE pollq_id = '.$questionId.' LIMIT 1');
         $q = $pollsq->fetchAll();
         $input_type = ($q[0]['pollq_multiple']==1)?'checkbox':'radio';
-        $pollq_totalvotes = $q[0]['pollq_totalvotes'];  
+        //$pollq_totalvotes = $q[0]['pollq_totalvotes']; 
         $pollsa = $__CMS_CONN__->query('SELECT * FROM '.TABLE_PREFIX.'djg_pollsa WHERE polla_qid = '.$questionId.' ORDER BY polla_aid ASC');
         $resultHtml[] = '<h3>'.$q[0]['pollq_question'].'</h3>';
         $resultHtml[] = '<ul style="margin: 0;">';
@@ -275,7 +274,6 @@ class Djgpoll {
       endif;
       return implode("", $resultHtml);
     } // end renderPollForm result
-    
     /**
     * render result
     * $questionId int
@@ -283,25 +281,24 @@ class Djgpoll {
     * return string
     */
     public static function renderPollResults($questionId=null,$answareId=null) {
-      $__CMS_CONN__ = Record::getConnection();
-      $order = (Plugin::getSetting('sortResults','djg_poll') == 1)?'ORDER BY a.polla_votes DESC':'';
-      $pollsq = $__CMS_CONN__->query('SELECT q.pollq_id, a.polla_aid, q.pollq_question, q.pollq_totalvotes, a.polla_answers, a.polla_votes FROM '.TABLE_PREFIX.'djg_pollsq q LEFT JOIN '.TABLE_PREFIX.'djg_pollsa a ON (q.pollq_id = a.polla_qid) WHERE q.pollq_id = '.$questionId.' '.$order.' ');
-      $q = $pollsq->fetchAll();    
-      $title = $q[0]['pollq_question'];
-      $total = $q[0]['pollq_totalvotes'];
-      $resultHtml[] = '<div class="djg_poll_result_area">';
-      $resultHtml[] = '<h3>'.$title.'</h3>';
-      foreach ($q as $row):
-        $yourBar = ( ($answareId) && (in_array($row['polla_aid'], $answareId)) && (Plugin::getSetting('specifyYourVote','djg_poll')==1) )?'yourBar':'';
-		$percent = ($total>0)?round(($row['polla_votes']*100)/$total):0;
-        $resultHtml[] = '<div class="option" ><p>'.$row['polla_answers'].' (<em>'.$percent.'%</em>)</p></div>';
-        $resultHtml[] = '<div class="bar '.$yourBar.'" style="width: '.$percent.'%; " ></div>'; 
-      endforeach;
-      $resultHtml[] = '<p>'.__('Total Votes: :total',array(':total'=> $total)).'</p>';  
-      $resultHtml[] = '</div>'; 
-      return implode("", $resultHtml);
+		$__CMS_CONN__ = Record::getConnection();
+		$order = (Plugin::getSetting('sortResults','djg_poll') == 1)?'ORDER BY polla_votes DESC':'';
+		$pollsq = $__CMS_CONN__->query('SELECT q.pollq_id, a.polla_aid, q.pollq_question, QQ.pollq_totalvotes, a.polla_answers, Q.polla_votes FROM '.TABLE_PREFIX.'djg_pollsa a LEFT JOIN '.TABLE_PREFIX.'djg_pollsq q ON (a.polla_qid = q.pollq_id) LEFT JOIN (SELECT COUNT(ip.pollip_aid) AS polla_votes, ip.pollip_aid FROM '.TABLE_PREFIX.'djg_pollsip ip GROUP BY ip.pollip_aid ) as Q ON (Q.pollip_aid = a.polla_aid) LEFT JOIN (SELECT COUNT(DISTINCT ip.pollip_id) AS pollq_totalvotes FROM '.TABLE_PREFIX.'djg_pollsip ip WHERE ip.pollip_qid = '.$questionId.' ) as QQ ON (Q.pollip_aid = a.polla_aid) WHERE a.polla_qid = '.$questionId.' GROUP BY polla_answers '.$order);
+		$q = $pollsq->fetchAll();  
+		$title = $q[0]['pollq_question'];
+		$total = $q[0]['pollq_totalvotes'];
+		$resultHtml[] = '<div class="djg_poll_result_area">';
+		$resultHtml[] = '<h3>'.$title.'</h3>';
+		foreach ($q as $row):
+			$yourBar = ( ($answareId) && (in_array($row['polla_aid'], $answareId)) && (Plugin::getSetting('specifyYourVote','djg_poll')==1) )?'yourBar':'';
+			$percent = ($total>0)?round(($row['polla_votes']*100)/$total):0;
+			$resultHtml[] = '<div class="option" ><p>'.$row['polla_answers'].' (<em>'.$percent.'%</em>)</p></div>';
+			$resultHtml[] = '<div class="bar '.$yourBar.'" style="width: '.$percent.'%; " ></div>'; 
+		endforeach;
+		$resultHtml[] = '<p>'.__('Total Votes: :total',array(':total'=> $total)).'</p>';  
+		$resultHtml[] = '</div>'; 
+		return implode("", $resultHtml);
     }
-
     /* HELPERS */
     /**
     * DONE
@@ -310,10 +307,10 @@ class Djgpoll {
     * return true or false
 	*/
     public static function isLive($questionId){
-      $__CMS_CONN__ = Record::getConnection();
-      $pollq = $__CMS_CONN__->query('SELECT pollq_id, pollq_startvote, pollq_endvote FROM '.TABLE_PREFIX.'djg_pollsq WHERE (pollq_id = '.$questionId.') AND ( pollq_startvote = "0000-00-00 00:00:00" OR pollq_endvote = "0000-00-00 00:00:00" OR (NOW()BETWEEN pollq_startvote AND pollq_endvote) ) LIMIT 1');
-      $rows = $pollq->fetchAll(PDO::FETCH_ASSOC);
-      return (count($rows)==1)?1:0;
+		$__CMS_CONN__ = Record::getConnection();
+		$pollq = $__CMS_CONN__->query('SELECT pollq_id, pollq_startvote, pollq_endvote FROM '.TABLE_PREFIX.'djg_pollsq WHERE (pollq_id = '.$questionId.') AND ( pollq_startvote = "0000-00-00 00:00:00" OR pollq_endvote = "0000-00-00 00:00:00" OR (NOW()BETWEEN pollq_startvote AND pollq_endvote) ) LIMIT 1');
+		$rows = $pollq->fetchAll(PDO::FETCH_ASSOC);
+		return (count($rows)==1)?1:0;
     }
     /**
     * DONE
@@ -322,10 +319,10 @@ class Djgpoll {
     * return true or false
     */
     public static function isActive($questionId){
-      $__CMS_CONN__ = Record::getConnection();
-      $pollq = $__CMS_CONN__->query('SELECT pollq_active FROM '.TABLE_PREFIX.'djg_pollsq WHERE pollq_id = '.$questionId.' AND pollq_active = 1 LIMIT 1');
-      $rows = $pollq->fetchAll(PDO::FETCH_ASSOC);
-      return (count($rows)==1)?1:0;
+		$__CMS_CONN__ = Record::getConnection();
+		$pollq = $__CMS_CONN__->query('SELECT pollq_active FROM '.TABLE_PREFIX.'djg_pollsq WHERE pollq_id = '.$questionId.' AND pollq_active = 1 LIMIT 1');
+		$rows = $pollq->fetchAll(PDO::FETCH_ASSOC);
+		return (count($rows)==1)?1:0;
     }
     /**
     * chack is archive
@@ -333,7 +330,7 @@ class Djgpoll {
     * return true or false
     */
     public static function isArchive($questionId){
-      return ( (self::isLive($questionId) === 0) || (self::isActive($questionId) === 0) )?1:0;
+		return ( (self::isLive($questionId) === 0) || (self::isActive($questionId) === 0) )?1:0;
     }
     /**
     * DONE

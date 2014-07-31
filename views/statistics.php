@@ -13,14 +13,14 @@
   <tr class="odd">
 		<td><?php echo __('Total polls'); ?></td>
 		<td><?php echo $qsa[0]['t'] ?></td>
-		<td><?php echo __('Total answares'); ?></td>
+		<td><?php echo __('Total answers'); ?></td>
 		<td><?php echo $asa[0]['tAnswares'] ?></td>
   </tr>
   <tr>
 		<td><?php echo __('Total votes'); ?></td>
-		<td><?php echo $qsa[0]['tVotes'] ?></td>
-		<td><?php echo __('Total voters'); ?></td>
-		<td><?php echo $qsa[0]['tVoters'] ?></td>
+		<td><?php echo $vsa[0]['tVotes'] ?></td>
+		<td><?php echo __('Total unique voters'); ?></td>
+		<td><?php echo $uvsa[0]['tVoters'] ?></td>
   </tr>
   <tr class="odd">
 		<td><?php echo __('Total active'); ?></td>
@@ -55,22 +55,3 @@
 <p><strong><?php echo __('Votes per day'); ?></strong></p>
 <img src="<?php echo URL_PUBLIC; ?>djg_poll_chart.php/<?php echo $_POST['djg_poll']['start_date']; ?>/<?php echo $_POST['djg_poll']['end_date']; ?>/<?php echo $_POST['djg_poll']['poll_id']; ?>/votesPerDay"/>
 <?php endif; ?>
-<?php
-/*
-echo '<pre>';
-print_r($qsa);
-echo '</pre>';
-
-$__CMS_CONN__ = Record::getConnection();
-$s1q = $__CMS_CONN__->query('SELECT q.pollq_id, q.pollq_question, COUNT(i.pollip_id) as votes, DATE(i.pollip_timestamp) AS date 
-FROM '.TABLE_PREFIX.'djg_pollsip i
-LEFT JOIN '.TABLE_PREFIX.'djg_pollsq q
-ON (i.pollip_qid = q.pollq_id)
-WHERE q.pollq_id = '.$djg_poll['poll_id'].'
-AND
-DATE(i.pollip_timestamp) between "'.$start_date.'" and "'.$end_date.'"
-GROUP BY DAY(i.pollip_timestamp)');
-while ($arr = $s1q->fetch()) $date[$arr['date']] = $arr['votes'];
-echo '<pre>';print_r($date);echo '</pre>';
-*/
- ?>

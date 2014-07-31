@@ -6,9 +6,15 @@ class DjgPollController extends PluginController
         $this->setLayout('backend');
         $this->assignToLayout('sidebar', new View('../../plugins/djg_poll/views/sidebar'));
     }
+	/** 
+	* 
+	*/
     function index() {
         $this->add();
     }
+	/** 
+	* 
+	*/
 	function add() {
 		if(isset($_POST['djg_poll'])):
 			$i=0;
@@ -50,80 +56,128 @@ class DjgPollController extends PluginController
 			$this->display('djg_poll/views/add', array('djg_poll' => null));
 		endif;
 	}
+	/** 
+	* 
+	*/
 	function edit($questionId, $pageId=1) {	
 		if ( (isset($_POST['djg_poll']))&&(isset($_POST['djg_poll']['questionId'])) ):
-		  if($_POST['djg_poll']['questionId'] != $questionId):
-			Flash::set('error', __('Difrent ids'));
-			redirect(get_url('plugin/djg_poll/polls/'.$pageId));
-		elseif( 
-		( (!empty($_POST['djg_poll']['startvote'])) && (!empty($_POST['djg_poll']['endvote'])) ) &&
-				($_POST['djg_poll']['startvote'] >= $_POST['djg_poll']['endvote'])
-		):
-			Flash::set('error', __('Start date is earlier than the end date.'));
-			 $this->display('djg_poll/views/edit', array('djg_poll' => $_POST['djg_poll'], 'questionId'=>$questionId, 'pageId'=>$pageId)); 
-		  elseif (Djgpoll::editPoll($_POST['djg_poll'])):
-			Flash::set('success', __('Changed have been saved.'));
-			redirect(get_url('plugin/djg_poll/polls/'.$pageId));
-		  else:
-			Flash::set('error', __('Changed have not been saved. Try again.'));
-			redirect(get_url('plugin/djg_poll/polls/'.$pageId));
-		  endif;
-       //($page_id!=0) ? redirect(get_url('plugin/djg_poll/edit/'.$pageId)) : redirect(get_url('plugin/djg_poll/edit'));
+			if($_POST['djg_poll']['questionId'] != $questionId):
+				Flash::set('error', __('Different ids'));
+				redirect(get_url('plugin/djg_poll/polls/'.$pageId));
+			elseif( ( (!empty($_POST['djg_poll']['startvote'])) && (!empty($_POST['djg_poll']['endvote'])) ) && ($_POST['djg_poll']['startvote'] >= $_POST['djg_poll']['endvote'])):
+				Flash::set('error', __('Start date is earlier than the end date.'));
+				$this->display('djg_poll/views/edit', array('djg_poll' => $_POST['djg_poll'], 'questionId'=>$questionId, 'pageId'=>$pageId)); 
+			elseif (Djgpoll::editPoll($_POST['djg_poll'])):
+				Flash::set('success', __('Changed have been saved.'));
+				redirect(get_url('plugin/djg_poll/polls/'.$pageId));
+			else:
+				Flash::set('error', __('Changed have not been saved. Try again.'));
+				redirect(get_url('plugin/djg_poll/polls/'.$pageId));
+			endif;
+			//($page_id!=0) ? redirect(get_url('plugin/djg_poll/edit/'.$pageId)) : redirect(get_url('plugin/djg_poll/edit'));
 		else:
-		// no post, get setting from DB
-		$__CMS_CONN__ = Record::getConnection();
-		$pollsq = $__CMS_CONN__->query('SELECT * FROM '.TABLE_PREFIX.'djg_pollsq WHERE pollq_id = '.$questionId.' LIMIT 1');
-		$data = $pollsq->fetchAll();
-		 $this->display('djg_poll/views/edit', array('djg_poll' => $data[0], 'questionId'=>$questionId, 'pageId'=>$pageId)); 
+			// no post, get setting from DB
+			$__CMS_CONN__ = Record::getConnection();
+			$pollsq = $__CMS_CONN__->query('SELECT * FROM '.TABLE_PREFIX.'djg_pollsq WHERE pollq_id = '.$questionId.' LIMIT 1');
+			$data = $pollsq->fetchAll();
+			$pollsa = $__CMS_CONN__->query('SELECT * FROM '.TABLE_PREFIX.'djg_pollsa WHERE polla_qid = '.$questionId);
+			$data_a = $pollsa->fetchAll();
+			$this->display('djg_poll/views/edit', array('djg_poll' => $data[0], 'answares' => $data_a, 'questionId'=>$questionId, 'pageId'=>$pageId)); 
 		endif;
 	}
+	/** 
+	* 
+	*/
 	function polls($page_number = 1) {
 		$this->display('djg_poll/views/polls', array('page_number' => $page_number));
 	}
-  function statistics() {
-    $__CMS_CONN__ = Record::getConnection();
-    $pollsQ = $__CMS_CONN__->query('SELECT pollq_id, pollq_question FROM '.TABLE_PREFIX.'djg_pollsq ORDER BY pollq_id DESC');
-    $polls = $pollsQ->fetchAll();
-    //questions
-    $qsaQ = $__CMS_CONN__->query('SELECT count(pollq_question) as t, SUM(pollq_totalvotes) as tVotes, SUM(pollq_totalvoters) as tVoters, SUM(pollq_active) as tActive, SUM(pollq_multiple) as tMultiple  FROM '.TABLE_PREFIX.'djg_pollsq WHERE 1');
-    $qsa = $qsaQ->fetchAll();
-    //answares
-    $asaQ = $__CMS_CONN__->query('SELECT count(polla_answers) as tAnswares FROM '.TABLE_PREFIX.'djg_pollsa WHERE 1');
-    $asa = $asaQ->fetchAll();
-    //
-    $error = 1;
-    if(isset($_POST['djg_poll'])):
-      if(Djgpoll::roznica_data($_POST['djg_poll']['end_date'],date('Y-m-d'),'days') < 0):
-        Flash::set('error', __('End date is older than today.')); Flash::init();
-        $error = 1;
-      elseif(Djgpoll::roznica_data($_POST['djg_poll']['start_date'],$_POST['djg_poll']['end_date'],'days') < 0):
-        Flash::set('error', __('Start date is older than End date.')); Flash::init();
-        $error = 1;
-      else:
-        //Flash::set('success', __('ok')); Flash::init();
-        $error = 0;
-      endif;
-    endif;
-    /*
-    if ($questionId != null):
-      $s1q = $__CMS_CONN__->query('SELECT q.pollq_id, a.polla_aid, q.pollq_question, q.pollq_totalvotes, a.polla_answers,	a.polla_votes  FROM '.TABLE_PREFIX.'djg_pollsq q LEFT JOIN '.TABLE_PREFIX.'djg_pollsa a ON (q.pollq_id = a.polla_qid) WHERE q.pollq_id = '.$questionId);
-      $s1 = $s1q->fetchAll();    
-      // $title = $q[0]['pollq_question']; 
-      //$total = $q[0]['pollq_totalvotes']; 
-    else:
-      $s1 = array();
-    endif;
-    */
-    
-    $this->display('djg_poll/views/statistics', array('polls' => $polls, 'qsa'=>$qsa, 'asa'=>$asa, 'error'=>$error));
-  }
+	/** 
+	* 
+	*/
+	function statistics() {
+		$__CMS_CONN__ = Record::getConnection();
+		$pollsQ = $__CMS_CONN__->query('SELECT pollq_id, pollq_question FROM '.TABLE_PREFIX.'djg_pollsq ORDER BY pollq_id DESC');
+		$polls = $pollsQ->fetchAll();
+		//questions
+		//$qsaQ = $__CMS_CONN__->query('SELECT count(pollq_question) as t, SUM(pollq_totalvotes) as tVotes, SUM(pollq_totalvoters) as tVoters, SUM(pollq_active) as tActive, SUM(pollq_multiple) as tMultiple  FROM '.TABLE_PREFIX.'djg_pollsq WHERE 1');
+		$qsaQ = $__CMS_CONN__->query('SELECT count(pollq_question) as t, SUM(pollq_active) as tActive, SUM(pollq_multiple) as tMultiple  FROM '.TABLE_PREFIX.'djg_pollsq WHERE 1');
+		$qsa = $qsaQ->fetchAll();
+		//votes
+		$vsaQ = $__CMS_CONN__->query('SELECT count(*) as tVotes FROM '.TABLE_PREFIX.'djg_pollsip');
+		$vsa = $vsaQ->fetchAll();
+		//unique voters
+		$uvsaQ = $__CMS_CONN__->query('SELECT count(distinct pollip_ip) as tVoters FROM '.TABLE_PREFIX.'djg_pollsip');
+		$uvsa = $uvsaQ->fetchAll();
+		//answares
+		$asaQ = $__CMS_CONN__->query('SELECT count(polla_answers) as tAnswares FROM '.TABLE_PREFIX.'djg_pollsa WHERE 1');
+		$asa = $asaQ->fetchAll();
+		//
+		$error = 1;
+		if(isset($_POST['djg_poll'])):
+		  if(Djgpoll::roznica_data($_POST['djg_poll']['end_date'],date('Y-m-d'),'days') < 0):
+			Flash::set('error', __('End date is older than today.')); Flash::init();
+			$error = 1;
+		  elseif(Djgpoll::roznica_data($_POST['djg_poll']['start_date'],$_POST['djg_poll']['end_date'],'days') < 0):
+			Flash::set('error', __('Start date is older than End date.')); Flash::init();
+			$error = 1;
+		  else:
+			//Flash::set('success', __('ok')); Flash::init();
+			$error = 0;
+		  endif;
+		endif; 
+		$this->display('djg_poll/views/statistics', array('polls' => $polls, 'qsa'=>$qsa, 'vsa' => $vsa, 'uvsa' => $uvsa, 'asa'=>$asa, 'error'=>$error));
+	}
+	/** 
+	* 
+	*/
+	function cancel_votes() {
+		$__CMS_CONN__ = Record::getConnection();
+		$pollsQ = $__CMS_CONN__->query('SELECT pollq_id, pollq_question FROM '.TABLE_PREFIX.'djg_pollsq ORDER BY pollq_id DESC');
+		$polls = $pollsQ->fetchAll();
+		if(isset($_POST['djg_poll'])):
+			if (empty($_POST['djg_poll']['poll_id'])):
+				Flash::set('error', __('Chose the poll')); Flash::init();
+				$this->display('djg_poll/views/cancel_votes', array('polls' => $polls, 'djg_poll' => $_POST['djg_poll']));
+			elseif ( (empty($_POST['djg_poll']['startvote'])) && (empty($_POST['djg_poll']['endvote'])) ):
+				Flash::set('error', __('Nothing to do - select date range')); Flash::init();
+				$this->display('djg_poll/views/cancel_votes', array('polls' => $polls, 'djg_poll' => $_POST['djg_poll']));
+			else:
+				$startvote = (empty($_POST['djg_poll']['startvote'])) ? '' : ' AND pollip_timestamp >= "'.$_POST['djg_poll']['startvote'].'"';
+				$endvote = (empty($_POST['djg_poll']['endvote'])) ? '': ' AND pollip_timestamp <= "'.$_POST['djg_poll']['endvote'].'"';	
+				$q = $__CMS_CONN__->exec('DELETE FROM '.TABLE_PREFIX.'djg_pollsip WHERE pollip_qid = "' . $_POST['djg_poll']['poll_id'] .'"' . $startvote . $endvote );
+				if($q != 0):
+					Flash::set('success', __('Votes canceled succesfull - :result vote(s)', array(':result' => (int)$q)));
+					Flash::init();
+				else:
+					Flash::set('info', __('No votes to cancel'));
+					Flash::init();
+				endif;
+				$this->display('djg_poll/views/cancel_votes', array('polls' => $polls, 'djg_poll' => $_POST['djg_poll']));
+			endif;
+		else:
+			// no post, empty form
+			$this->display('djg_poll/views/cancel_votes', array('polls' => $polls, 'djg_poll' => null));
+		endif;
+	}
+
+	/** 
+	* 
+	*/
 	public function documentation() {
 		$content = Parsedown::instance()->parse(file_get_contents(PLUGINS_ROOT.DS.'djg_poll'.DS.'README.md'));
         $this->display('djg_poll/views/documentation', array('content'=>$content));
     }
+
+	/** 
+	* 
+	*/	
     function settings() {
         $this->display('djg_poll/views/settings', array('settings' => Plugin::getAllSettings('djg_poll')));
     }
+	
+	/** 
+	* 
+	*/
     function save() {
         if (isset($_POST['settings'])):
             $settings = $_POST['settings'];
@@ -137,13 +191,18 @@ class DjgPollController extends PluginController
         endif;
         redirect(get_url('plugin/djg_poll/settings'));
     }
+	
+	/** 
+	* 
+	*/
 	function delete($id, $page_id=0) {
 		if (Djgpoll::delPoll($id)) Flash::set('success',__('Poll was deleted!'));
 		($page_id!=0) ? redirect(get_url('plugin/djg_poll/polls/'.$page_id)) : redirect(get_url('plugin/djg_poll/polls'));
 	}
-  /**
-  * change poll status active / inactive
-  */
+	
+	/**
+	* change poll status active / inactive
+	*/
 	function onOff($id, $page_id=0) {
     $result = Djgpoll::onOffPoll($id);
 		if ($result===false) 
@@ -185,7 +244,6 @@ class DjgPollController extends PluginController
 		if( (!isset($_POST['answare_id'])) || (!isset($_POST['question_id'])) ):
 			$json['error'] = 1;
 			$json['alert'] = 'no answare_id or question_id';
-
 		else:
 			$addVote = Djgpoll::addVote($_POST['question_id'],$_POST['answare_id']);
 			if($addVote['error'] == 1):
@@ -200,7 +258,7 @@ class DjgPollController extends PluginController
 		exit();
 	}
 	/** 
-	* Dispatcher
+	* 
 	*/
 	public function djg_poll_frontend_assets(){
 	header("Content-type: application/x-javascript");

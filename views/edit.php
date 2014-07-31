@@ -9,64 +9,72 @@
 <form id="djg_poll_form" action="<?php echo get_url('plugin/djg_poll/edit/'.$questionId.'/'.$pageId); ?>" method="post">
     <fieldset style="padding: 0.5em;">
         <table class="fieldset" cellpadding="0" cellspacing="0" border="0">
-		<input type="hidden" name="djg_poll[questionId]" value="<?php echo $questionId; ?>" />
-		<tr>
-			<td class="label"><?php echo __('Multiple'); ?>: </label></td>
-			<td class="field">
-				<select id="subject" name="djg_poll[multiple]">
-					<option value="0" <?php if($djg_poll['pollq_multiple'] == "0") echo 'selected="selected"' ?>><?php echo __('no'); ?></option>
-					<option value="1" <?php if($djg_poll['pollq_multiple'] == "1") echo 'selected="selected"' ?>><?php echo __('yes'); ?></option>
-				</select>	
-			</td>
-			<td class="help"><?php echo __('Allows users to select more than one answer.'); ?></td>
-		</tr>
-		<tr>
-			<td class="label"><?php echo __('Is active'); ?>: </label></td>
-			<td class="field">
-				<select id="subject" name="djg_poll[active]">
-					<option value="0" <?php if($djg_poll['pollq_active'] == "0") echo 'selected="selected"' ?>><?php echo __('no'); ?></option>
-					<option value="1" <?php if($djg_poll['pollq_active'] == "1") echo 'selected="selected"' ?>><?php echo __('yes'); ?></option>
-				</select>	
-			</td>
-			<td class="help"><?php echo __('Possible to vote.'); ?></td>
-		</tr>
-		<tr>
-			<td class="label"><?php echo __('Time between votes'); ?>: </label></td>
-			<td class="field">
-				<select id="timestamp" name="djg_poll[timestamp]">
-					<option value="0" <?php if($djg_poll['pollq_timestamp'] == 0) echo 'selected="selected"' ?>><?php echo __('no restrictions'); ?></option>
-					<option value="1" <?php if($djg_poll['pollq_timestamp'] == 1) echo 'selected="selected"' ?>><?php echo __('every hour'); ?></option>
-					<option value="24" <?php if($djg_poll['pollq_timestamp'] == 1*24) echo 'selected="selected"' ?>><?php echo __('once a day'); ?></option>
-					<option value="168" <?php if($djg_poll['pollq_timestamp'] == 1*24*7) echo 'selected="selected"' ?>><?php echo __('every 7 Days'); ?></option>
-					<option value="720" <?php if($djg_poll['pollq_timestamp'] == 1*24*30) echo 'selected="selected"' ?>><?php echo __('every 30 Days'); ?></option>
-					<option value="8760" <?php if($djg_poll['pollq_timestamp'] == 1*24*365) echo 'selected="selected"' ?>><?php echo __('every 365 Days'); ?></option>
-				</select>
-			</td>
-			<td class="help"><?php echo __('You can set the time between successive votes.'); ?></td>
-		</tr>
-		<tr>
-			<td class="label"><?php echo __('Lifetime (optional)'); ?></label></td>
-			<td class="field"></td>
-			<td class="help"><?php echo __('You can set lifetime of poll. Fomat is: <strong>YYYY-MM-DD HH:MM:SS</strong>'); ?></td>
-		</tr>			
-		<tr>
-			<td class="label"><?php echo __('Start'); ?>: </label></td>
-			<td class="field">
-				<input id="startvote" name="djg_poll[startvote]" type="text" value="<?php if($djg_poll['pollq_startvote']) echo $djg_poll['pollq_startvote']; ?>" />
-				<span class="now_date"><?php echo __('now'); ?></span> <span class="clear_date"><?php echo __('clear'); ?></span>
-			</td>
-			<td class="help"><?php echo __('If You don\'t want to use lifetime just leave empty fields.'); ?></td>
-		</tr>
-		<tr>
-			<td class="label"><?php echo __('End'); ?>: </label></td>
-			<td class="field">
-				<input id="endvote" name="djg_poll[endvote]" type="text" value="<?php if($djg_poll['pollq_endvote']) echo $djg_poll['pollq_endvote']; ?>" /> <span class="now_date"><?php echo __('now'); ?></span> <span class="clear_date"><?php echo __('clear'); ?></span>
-			</td>
-			<td class="help"><?php echo __('You can use keybord cursor to change value.'); ?></td>
-		</tr>
-      <tr>
-        <td class="label"></td>
-        <td class="field">
+			<input type="hidden" name="djg_poll[questionId]" value="<?php echo $questionId; ?>" />
+			<tr>
+				<td class="label"><?php echo __('Multiple'); ?>: </label></td>
+				<td class="field">
+					<select id="subject" name="djg_poll[multiple]">
+						<option value="0" <?php if($djg_poll['pollq_multiple'] == "0") echo 'selected="selected"' ?>><?php echo __('no'); ?></option>
+						<option value="1" <?php if($djg_poll['pollq_multiple'] == "1") echo 'selected="selected"' ?>><?php echo __('yes'); ?></option>
+					</select>	
+				</td>
+				<td class="help"><?php echo __('Allows users to select more than one answer.'); ?></td>
+			</tr>
+			<tr>
+				<td class="label"><?php echo __('Is active'); ?>: </label></td>
+				<td class="field">
+					<select id="subject" name="djg_poll[active]">
+						<option value="0" <?php if($djg_poll['pollq_active'] == "0") echo 'selected="selected"' ?>><?php echo __('no'); ?></option>
+						<option value="1" <?php if($djg_poll['pollq_active'] == "1") echo 'selected="selected"' ?>><?php echo __('yes'); ?></option>
+					</select>	
+				</td>
+				<td class="help"><?php echo __('Possible to vote.'); ?></td>
+			</tr>
+			<tr>
+				<td class="label"><?php echo __('Time between votes'); ?>: </label></td>
+				<td class="field">
+					<select id="timestamp" name="djg_poll[timestamp]">
+						<option value="0" <?php if($djg_poll['pollq_timestamp'] == 0) echo 'selected="selected"' ?>><?php echo __('no restrictions'); ?></option>
+						<option value="1" <?php if($djg_poll['pollq_timestamp'] == 1) echo 'selected="selected"' ?>><?php echo __('every hour'); ?></option>
+						<option value="24" <?php if($djg_poll['pollq_timestamp'] == 1*24) echo 'selected="selected"' ?>><?php echo __('once a day'); ?></option>
+						<option value="168" <?php if($djg_poll['pollq_timestamp'] == 1*24*7) echo 'selected="selected"' ?>><?php echo __('every 7 Days'); ?></option>
+						<option value="720" <?php if($djg_poll['pollq_timestamp'] == 1*24*30) echo 'selected="selected"' ?>><?php echo __('every 30 Days'); ?></option>
+						<option value="8760" <?php if($djg_poll['pollq_timestamp'] == 1*24*365) echo 'selected="selected"' ?>><?php echo __('every 365 Days'); ?></option>
+					</select>
+				</td>
+				<td class="help"><?php echo __('You can set the time between successive votes.'); ?></td>
+			</tr>
+			<tr>
+				<td class="label"><?php echo __('Lifetime (optional)'); ?></label></td>
+				<td class="field"></td>
+				<td class="help"><?php echo __('You can set lifetime of poll. Fomat is: <strong>YYYY-MM-DD HH:MM:SS</strong>'); ?></td>
+			</tr>			
+			<tr>
+				<td class="label"><?php echo __('Start'); ?>: </label></td>
+				<td class="field">
+					<input id="startvote" name="djg_poll[startvote]" type="text" value="<?php if($djg_poll['pollq_startvote']) echo $djg_poll['pollq_startvote']; ?>" />
+					<span class="now_date"><?php echo __('now'); ?></span> <span class="clear_date"><?php echo __('clear'); ?></span>
+				</td>
+				<td class="help"><?php echo __('If You don\'t want to use lifetime just leave empty fields.'); ?></td>
+			</tr>
+			<tr>
+				<td class="label"><?php echo __('End'); ?>: </label></td>
+				<td class="field">
+					<input id="endvote" name="djg_poll[endvote]" type="text" value="<?php if($djg_poll['pollq_endvote']) echo $djg_poll['pollq_endvote']; ?>" /> <span class="now_date"><?php echo __('now'); ?></span> <span class="clear_date"><?php echo __('clear'); ?></span>
+				</td>
+				<td class="help"><?php echo __('You can use keybord cursor to change value.'); ?></td>
+			</tr>
+			<tr>
+				<td class="label"><?php echo __('Answers'); ?>:</td>
+				<td class="field">
+					<?php
+						echo '<ol style="padding-left: 20px;">';
+						foreach($answares as $unswere):
+							echo '<li>' . $unswere['polla_answers'] . '</li>';
+							//echo '<pre>'; print_r($unswere);
+						endforeach;
+						echo '</ol>';
+					?>
 				</td>
 				<td class="help"></td>
 			</tr>

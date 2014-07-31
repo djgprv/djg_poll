@@ -28,18 +28,11 @@
 	* @copyright kreacjawww.pl
 	* @license http://www.gnu.org/licenses/gpl.html GPLv3 license
 */
-/**
-	* history version
-	* 0.31 - fix voting security bug (thx moroz), cleanup the code, small changes in en-message.php
-	* 0.0.3 - new trim text fynction, fixed division by zero in renderPollResults  
-	* 0.0.2 - clean up, bug fixes, lifetime option, polish translation
-	* 0.0.1 - to test
-*/
 Plugin::setInfos(array(
 	'id'		=> 'djg_poll',
 	'title'		=> __('[djg] Poll'),
 	'description'	=> __('AJAX poll system to your WolfCMS site.'),
-	'version'	=> '0.33',
+	'version'	=> '0.34',
 	'license'	=> 'GPL',
 	'author'	=> 'Michał Uchnast',
 	'website'	=> 'http://www.kreacjawww.pl/',

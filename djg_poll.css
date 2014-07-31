@@ -22,6 +22,8 @@
 #djg_poll_list td.updated_by { width: 120px; }
 #djg_poll_list td.date { width: 160px; text-align: center; }
 
+#djg_poll .field ul.list li {float: left; padding-right: 5px;}
+#djg_poll .field button{cursor: pointer;}
 #djg_poll_form ul.a img {margin-left: 4px;}
 del.deletion {color: red; background: #fcc; border: 1px solid #a66; text-decoration: none;}
 ins.insertion {color: green; font-weight: bold; background: #cfc; border: 1px solid #6a6; text-decoration: none;}

@@ -47,8 +47,8 @@
 		</tr>
 		<tr class="u_area">
 			<td class="label">
-				<?php echo __('Answers'); ?>
-				<a href="#" class="add_answer"><img src="<?php echo URL_PUBLIC; ?>wolf/plugins/djg_cf/images/16_add.png" alt="<?php echo __('Add answer'); ?>" title="<?php echo __('Add answer'); ?>" /></a>
+				<?php echo __('Answers'); ?>:<br />
+				<a href="#" class="add_answer"><img src="<?php echo URL_PUBLIC; ?>wolf/plugins/djg_poll/images/32_add_a.png" alt="<?php echo __('Add answer'); ?>" title="<?php echo __('Add answer'); ?>" /></a>
 			</td>
 			<td class="field">
 				<ul class="a">
@@ -102,15 +102,16 @@
 		<tr>
 			<td class="label"><?php echo __('Start'); ?>: </label></td>
 			<td class="field">
-				<input id="startvote" name="djg_poll[startvote]" type="text" value="<?php if($djg_poll['startvote']) echo $djg_poll['startvote']; ?>" />
-				<span class="now_date"><?php echo __('now'); ?></span><span class="clear_date"><?php echo __('clear'); ?></span>
+				<input id="startvote" name="djg_poll[startvote]" type="text" value="<?php if($djg_poll['startvote']) echo $djg_poll['startvote']; ?>" />&emsp;
+				<span class="now_date"><?php echo __('now'); ?></span>&emsp;<span class="clear_date"><?php echo __('clear'); ?></span>
 			</td>
 			<td class="help"><?php echo __('If You don\'t want to use lifetime just leave empty fields.'); ?></td>
 		</tr>
 		<tr>
 			<td class="label"><?php echo __('End'); ?>: </label></td>
 			<td class="field">
-				<input id="endvote" name="djg_poll[endvote]" type="text" value="<?php if($djg_poll['endvote']) echo $djg_poll['endvote']; ?>" /><span class="now_date"><?php echo __('now'); ?></span><span class="clear_date"><?php echo __('clear'); ?></span>
+				<input id="endvote" name="djg_poll[endvote]" type="text" value="<?php if($djg_poll['endvote']) echo $djg_poll['endvote']; ?>" />&emsp;
+				<span class="now_date"><?php echo __('now'); ?></span>&emsp;<span class="clear_date"><?php echo __('clear'); ?></span>
 			</td>
 			<td class="help"><?php echo __('You can use keybord cursor to change value.'); ?></td>
 		</tr>
