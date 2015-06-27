@@ -4,6 +4,8 @@
 
 HISTORY VERSION
 ----
+* **0.35**
+* fix dateFormat jQuery plugin bug
 * **0.34**
 * added cancel votes functionality
 * editable usleep and cookie prefix variables

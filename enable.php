@@ -54,7 +54,7 @@ $PDO->exec("ALTER TABLE ".TABLE_PREFIX."djg_pollsa DROP polla_votes");
 $PDO->exec("ALTER TABLE ".TABLE_PREFIX."djg_pollsq DROP pollq_totalvotes, DROP pollq_totalvoters");
 
 $settings = array(
-	'ver' => '0.34',
+	'ver' => '0.35',
 	'defaultMultiple' => '0',
 	'defaultActive' => '1',
 	'resultsPerPage' => '5',

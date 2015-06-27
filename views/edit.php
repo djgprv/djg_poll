@@ -89,6 +89,7 @@
 <script type="text/javascript">
 // <![CDATA[
 	$(document).ready(function() {
+		$.format = DateFormat.format;
 		$.datetimeEntry.setDefaults({spinnerImage: '<?php echo URL_PUBLIC; ?>wolf/plugins/djg_poll/js/spinnerDefault.png'});	
 		if($("#startvote").val()=='0000-00-00 00:00:00'){ $("#startvote").val(''); };
 		if($("#endvote").val()=='0000-00-00 00:00:00'){	$("#endvote").val(''); };

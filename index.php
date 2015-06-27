@@ -32,7 +32,7 @@ Plugin::setInfos(array(
 	'id'		=> 'djg_poll',
 	'title'		=> __('[djg] Poll'),
 	'description'	=> __('AJAX poll system to your WolfCMS site.'),
-	'version'	=> '0.34',
+	'version'	=> '0.35',
 	'license'	=> 'GPL',
 	'author'	=> 'Michał Uchnast',
 	'website'	=> 'http://www.kreacjawww.pl/',
@@ -46,8 +46,8 @@ define('DJG_POLL_DEBUG', true);
 Plugin::addController('djg_poll', __('[djg] Poll'), 'administrator', Plugin::getSetting('showTab','djg_poll'));
 
 Plugin::addJavascript('djg_poll', 'js/jquery.datetimeentry.js');
-Plugin::addJavascript('djg_poll', 'js/jquery.dateFormat-1.0.js');
-
+//Plugin::addJavascript('djg_poll', 'js/jquery.dateFormat-1.0.js');
+Plugin::addJavascript('djg_poll', 'js/dateFormat.js');
 include_once('models'.DS.'Djgpoll.php');
 include_once('lib'.DS.'phpMyGraph5.0.php');
 include_once('lib'.DS.'DateDifference.php');
